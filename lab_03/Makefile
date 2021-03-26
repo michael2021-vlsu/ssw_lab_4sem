@@ -1,7 +1,16 @@
-SRC	:= ./src/
+CURR_DIR := .
 
-all:
-	g++ ${SRC}*.cpp -std=c++17 -o lab_03
+all: labs
+	
+check: run
+
+.PHONY: labs
+labs:
+	cd src && $(MAKE) build
+
+.PHONY: run
+run: 
+	./src/lab_work
 
 clean:
-	rm -rf lab_03
+	rm -rf lab_work
