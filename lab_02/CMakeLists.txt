@@ -5,4 +5,4 @@ project(lab_02)
 set(CMAKE_CXX_STANDARD 17)
 set(SRC ./src)
 
-add_executable(lab_02 ${SRC}/main.cpp ${SRC}/generator.h)
+add_executable(lab_02 ${SRC}/*.cpp)
