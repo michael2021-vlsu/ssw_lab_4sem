@@ -78,6 +78,7 @@ To work with *git* you should to use [Github client](https://desktop.github.com/
 # [Wiki](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki)
 
 - [Как сделать "форк" репозитория?](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki);
-- [А как мне обновить свой "форк"?](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki);
-- [Не могу обновить свой форк из-за конфликта](https://bit.ly/3a0WaiO);
+- [А как мне обновить свой "форк"?](https://bit.ly/3fFPgFz);
+- [Не могу обновить свой форк из-за конфликта](https://bit.ly/3fIHRoR);
 - [FAQ и прочее по работам](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki);
+
