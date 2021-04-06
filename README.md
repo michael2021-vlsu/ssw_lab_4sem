@@ -1,84 +1,83 @@
-# ssw_lab_4sem
-Set of laboratory tasks for course of system software (4 semester)
-
 ## lab_01
 
-Implementation of stack (LIFO)/queue(FIFO)/vector.  
+Реализация таких линейных структур данных как: стек, очередь, вектор.
 
-## lab_02
+Данные структуры должны поддерживать следующие операции/свойства:
 
-Implementation of single/double linked list, circular buffer.  
+- push - вставка элемента в структуру;
+- pop - выталкивание элемента из структуры;
+- peek - возврат вершины структуры (верхнего элемента);
+- count - возврат количества элементов в структуре;
+- at - метод произвольного доступа к элементу, реализуется только для структуры *вектор*;
+- динамический размер - размер структуры должен увеличиваться при необходимости;
+- операторы сравнения (>, <, !=, etc) - объекты структур должны поддерживать операции **лексикографического** сравнения;
+- не должны содержать в себе STL контейнеров (`std::stack, std::queue, std::vector`).
 
-## lab_03  
+Бонусы (не обязательно к выполнению):
 
-Implementation of general tree and binary search tree. 
+- шаблонный интерфейс - структура является по своей сути контейнером, может содержать элементы любого типа (`my_structure<int> int_obj; my_structure<float> float_obj`).
 
-## lab_04
+------------------------------
 
-Implementation of map and hash-table.
+### Что Вы должны сделать:
 
+Ниже представлен список **индивидуальных** заданий:
 
-What we will be do:
+- вариант 1: 
+  - реализация обмена (*swap*) данными между структурами; 
+  - определение "горной" последовательности;[1]
+- вариант 2: 
+  - отсортированная конкатенация данных между структурами одного типа;[2]
+  - вычисление среднего арифметического;
+- вариант 3:  
+  - исключение из структуры элементов подпадающих в заданный диапазон;
+  - реализация смены порядка элементов в структуре на обратный (*reverse*);
+- вариант 4:  
+  - вычисление суммы всех элементов;
+  - конкатенация данных внутри структуры.[3]
 
-- build different structures of data;
-- compare our realization with STL;
-- implement arithmetic parser;
+##### [1]: Если данные в структуре удовлетворяют следующим условиям:
+- кол-во эл-ов >= 3;
+- есть индекс i: *0 < i < struct.size() - 1*, так что:
+	- *struct[0] < struct[1] < ... < struct[i - 1] < struct[i]*
+	- *struct[i] > struct[i + 1] > ... > struct[struct.size() - 1]*
 
+то вызов метода `isMount()` должен вернуть `true`, в противном случае `false`.
 
-## How work with this repository
+##### [2]: например: имеются два вектора v1 {0, 1, 5} и v2 {1, 4, 5}. Результат конкатенации вернёт вектор {0, 1, 1, 4, 5, 5};
 
-You have to **fork** this repository, create your **branch** and complete tasks. **All changes** you will be **commit** and **push** in your **forked repository**. After you make sure that everything works, you send **pull request** to **this** repository. For updating (synchronize) your copy (fork) repository, you have to **set upstream** to this repository, **fetch** changes **from the upstream** (this) repository, **merge** the changes **into your local** repository and **push** them **to your remote** repository.
+##### [3]: К примеру: структура содержит следующий перечень элементов { 1, 2, 5, 40, 3 }, соответственно их конкатенация выдаст число 125403. Все отрицательные числа берутся по модулю, не реализуется для структуры - стек.
 
-To work with *git* you should to use [Github client](https://desktop.github.com/) (*nix systems already have git CLI client) and [Git CLI](https://gitforwindows.org/). Google next terms:
+-----------------
 
-- `git clone`
-- `git add`
-- `git commit -m`
-- `git checkout`
-- `git merge`
-- `git pull`
-- `git push`
-- `git rebase`
-- `git log`
-- `git diff`
-- `git fetch`
-- `git remote`
+Ваши **структуры должны** поддерживать реализации индивидуальных заданий (если не было указано иное). К примеру: *стек, очередь и вектор, для варианта 1 должны поддерживать такие методы как `swap` и `isMount` предоставляя ожидаемый функционал (обмен и "переворот" данных).* 
 
+### Сборка
 
-## Useful
+Все представленные ниже инструкции используются для _*nix_ семейства ОС.  Для пользователей ОС Windows может понадобиться использование других инструкций (либо вы можете использовать *Cygwin* или *MinGW*).
 
-- [Git How To](https://githowto.com/ru/setup)
-- [Git Bash](https://gitforwindows.org/)
-- [Git Update fork](https://help.github.com/en/articles/syncing-a-fork)
-- [Google Code Style Guide](https://google.github.io/styleguide/cppguide.html)
-- [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
-- [C++ FAQ](https://isocpp.org/faq)
-- [Multi language online documentation](https://docs.w3cub.com/cpp/)
-- [Online C++ Benchmark](http://quick-bench.com/)
-- [Jetbrain Student License](https://www.jetbrains.com/shop/eform/students)
-- [MinGW](http://mingw-w64.org/doku.php)
-- [Cygwin](https://www.cygwin.com/)
-- [CMake](https://cmake.org/download/)
-- [Online BST constructor](https://www.cs.usfca.edu/~galles/visualization/BST.html)
-- [CppCheck](http://cppcheck.sourceforge.net/)
-- [Valgrind](https://valgrind.org/)
-- [WSL](https://docs.microsoft.com/ru-ru/windows/wsl/install-win10)
-  
+Для сборки с помощью `make` (Makefile):
 
-## Issues
+```bash
+$ cd <to repo path>/lab_01
+$ make
+```
 
-- [How to update your fork](https://stackoverflow.com/questions/20984802/how-can-i-keep-my-fork-in-sync-without-adding-a-separate-remote/21131381#21131381)
-- [How to setup Git in CLion](https://stackoverflow.com/questions/35087523/git-exe-error-while-loading-shared-libraries-cannot-open-shared-object-file)
-- [How to generate Visual Studio project files via CMake](https://preshing.com/20170511/how-to-build-a-cmake-based-project/)
-- [How to make friends our CMake with Visual Studio](https://www.youtube.com/watch?v=gYmgbqGfv-8)
-- [How to make friends CMake and Visual Studio[2]](https://docs.microsoft.com/ru-ru/cpp/build/cmake-projects-in-visual-studio?view=vs-2019)
-- [How to import CMake project in Qt Creator](https://codeyarns.com/2016/01/26/how-to-import-cmake-project-in-qt-creator/)
+Для сборки с помощью `cmake` (CMakeLists.txt):
 
+```bash
+$ cd <to repo path>/lab_01
+$ cmake .
+$ make
+```
 
-# [Wiki](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki)
+### Отчёт
 
-- [Как сделать "форк" репозитория?](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki);
-- [А как мне обновить свой "форк"?](https://bit.ly/3fFPgFz);
-- [Не могу обновить свой форк из-за конфликта](https://bit.ly/3fIHRoR);
-- [FAQ и прочее по работам](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki);
+В отчёте должно содержаться:
 
+- перечисление **выполненых** заданий;
+- листинг (код) программы;
+- тестирование программы;
+- сравнение производительности основных операций между вашими структурами и STL контейнерами;
+- вывод скомпилированной программы;
+- вывод по проделанной работе.
