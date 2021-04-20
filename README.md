@@ -1,3 +1,5 @@
+![state](https://github.com/michael2021-vlsu/ssw_lab_4sem/actions/workflows/c-cpp.yml/badge.svg)
+
 # ssw_lab_4sem
 Set of laboratory tasks for course of system software (4 semester)
 

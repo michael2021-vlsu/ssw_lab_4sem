@@ -1,3 +1,5 @@
+![state](https://github.com/michael2021-vlsu/ssw_lab_4sem/actions/workflows/c-cpp.yml/badge.svg)
+
 ## lab_02
 
 Реализация таких структур данных как: односвязный, двусвязный список, кольцевой буфер.

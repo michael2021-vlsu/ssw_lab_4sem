@@ -1,3 +1,5 @@
+![state](https://github.com/michael2021-vlsu/ssw_lab_4sem/actions/workflows/c-cpp.yml/badge.svg)
+
 ## lab_03
 
 Реализация таких нелинейных структур данных как: обычное (*general*) дерево, бинарное дерево поиска.
