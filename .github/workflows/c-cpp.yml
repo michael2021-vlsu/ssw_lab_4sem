@@ -1,6 +1,6 @@
 name: C/C++ CI
 
-on: [pull_request_target, pull_request_review, pull_request]
+on: [push, pull_request_target, pull_request_review, pull_request]
 
 jobs:
   build:
