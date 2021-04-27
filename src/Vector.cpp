@@ -1,5 +1,4 @@
-#ifndef VECTOR
-#define VECTOR
+
 #include <iostream>
 
 class Vector
@@ -79,9 +78,9 @@ int Vector::pop_front()
 		return 0;
 	}
 	int* new_arr = new int[size - 1];
-	for (int i = 0; i < size-1; i++)
+	for (int i = 0; i < size - 1; i++)
 	{
-		new_arr[i] = arr[i+1];
+		new_arr[i] = arr[i + 1];
 	}
 	int element;
 	element = arr[0];
@@ -103,7 +102,7 @@ int Vector::pop_back()
 		new_arr[i] = arr[i];
 	}
 	int element;
-	element = arr[size-1];
+	element = arr[size - 1];
 	delete[] arr;
 	arr = new_arr;
 	size--;
@@ -141,7 +140,7 @@ void Vector::deleteRange(int start, int end)
 	}
 	else
 	{
-		if ((size < end || size < start) || (start > end) || (start<0))
+		if ((size < end || size < start) || (start > end) || (start < 0))
 		{
 			std::cout << "Error! Range is incorrect.\n";
 			return;
@@ -153,7 +152,7 @@ void Vector::deleteRange(int start, int end)
 	{
 		new_arr[i] = arr[i];
 	}
-	for (int i = start, j = end+1; i < local_size, j<size; i++, j++)
+	for (int i = start, j = end + 1; i < local_size, j < size; i++, j++)
 	{
 		new_arr[i] = arr[j];
 	}
@@ -188,7 +187,7 @@ Vector& Vector::operator=(const Vector& Second_Vector)
 	for (int i = 0; i < size; i++)
 	{
 		arr[i] = Second_Vector.arr[i];
-	}	
+	}
 	return *this;
 }
 bool Vector::operator<(const Vector& Second_Vector)
@@ -235,7 +234,7 @@ bool Vector::operator==(const Vector& Second_Vector)
 }
 bool Vector::operator!=(const Vector& Second_Vector)
 {
-	return !(*this == Second_Vector);	
+	return !(*this == Second_Vector);
 }
 bool Vector::operator<=(const Vector& Second_Vector)
 {
@@ -257,11 +256,11 @@ std::ostream& operator<<(std::ostream& out, const Vector& This_Vector)
 {
 	for (int i = 0; i < This_Vector.size; i++)
 	{
-		out  << "  "<< This_Vector.arr[i];
+		out << "  " << This_Vector.arr[i];
 		if (i == (This_Vector.size - 1))
 			out << "\n";
 	}
 	return out;
 }
-
-#endif
+int main()
+{}
