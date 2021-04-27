@@ -1,54 +1,64 @@
 
 #include <iostream>
-
+template <typename T>
 class Vector
 {
 public:
 private:
-	int* arr; //Array of elements
+	T* arr; //Array of elements
 	int size; //The number of elements
 public:
 	Vector();
 	~Vector();
 
-	void push_front(int); //Insert element to front
-	void push_back(int); //Insert element to back
-	int pop_front(); //Get and remove element from front
-	int pop_back(); //Get and remove element from back
-	int peek(); //Get the first element
+	void push_front(T); //Insert element to front
+	void push_back(T); //Insert element to back
+	T pop_front(); //Get and remove element from front
+	T pop_back(); //Get and remove element from back
+	T peek(); //Get the first element
 	int count(); //Get the number of elements in vector 
-	int at(int); //Get element with index
+	T at(int); //Get element with index
 
 	//Individual tasks
 	void deleteRange(int, int); //Delete given range
 	void reverse(); //Reverse order of elements
 
 	//Lexicographic overloading of operators
-	Vector& operator=(const Vector&);
-	bool operator<(const Vector&);
-	bool operator>(const Vector&);
-	bool operator==(const Vector&);
-	bool operator!=(const Vector&);
-	bool operator<=(const Vector&);
-	bool operator>=(const Vector&);
+	Vector<T>& operator=(const Vector<T>&);
+	bool operator<(const Vector<T>&);
+	bool operator>(const Vector<T>&);
+	bool operator==(const Vector<T>&);
+	bool operator!=(const Vector<T>&);
+	bool operator<=(const Vector<T>&);
+	bool operator>=(const Vector<T>&);
 
 	//Operator overloading of 'cout'
-	friend std::ostream& operator<<(std::ostream&, const Vector&);
+	friend std::ostream& operator<<(std::ostream& out, const Vector<T>& This_Vector)
+	{
+		for (int i = 0; i < This_Vector.size; i++)
+		{
+			out << "  " << This_Vector.arr[i];
+			if (i == (This_Vector.size - 1))
+				out << "\n";
+		}
+		return out;
+	}
+
 
 };
-Vector::Vector()
+template <typename T>Vector<T>::Vector()
 {
 	size = 0;
 	arr = 0;
 }
-Vector::~Vector()
+template <typename T>Vector<T>::~Vector()
 {
 	delete[] arr;
 }
 
-void Vector::push_front(int element)
+template <typename T>void Vector<T>::push_front(T element)
 {
-	int* new_arr = new int[size + 1];
+	T* new_arr = new T[size + 1];
 	new_arr[0] = element;
 	for (int i = 1; i <= size; i++)
 	{
@@ -58,9 +68,9 @@ void Vector::push_front(int element)
 	arr = new_arr;
 	size++;
 }
-void Vector::push_back(int element)
+template <typename T>void Vector<T>::push_back(T element)
 {
-	int* new_arr = new int[size + 1];
+	T* new_arr = new T[size + 1];
 	for (int i = 0; i < size; i++)
 	{
 		new_arr[i] = arr[i];
@@ -70,45 +80,45 @@ void Vector::push_back(int element)
 	arr = new_arr;
 	size++;
 }
-int Vector::pop_front()
+template <typename T>T Vector<T>::pop_front()
 {
 	if (size == 0)
 	{
 		std::cout << "Error! Vector is empty.\n";
 		return 0;
 	}
-	int* new_arr = new int[size - 1];
+	T* new_arr = new T[size - 1];
 	for (int i = 0; i < size - 1; i++)
 	{
 		new_arr[i] = arr[i + 1];
 	}
-	int element;
+	T element;
 	element = arr[0];
 	delete[] arr;
 	arr = new_arr;
 	size--;
 	return element;
 }
-int Vector::pop_back()
+template <typename T>T Vector<T>::pop_back()
 {
 	if (size == 0)
 	{
 		std::cout << "Error! Vector is empty.\n";
 		return 0;
 	}
-	int* new_arr = new int[size - 1];
+	T* new_arr = new T[size - 1];
 	for (int i = 0; i < size - 1; i++)
 	{
 		new_arr[i] = arr[i];
 	}
-	int element;
+	T element;
 	element = arr[size - 1];
 	delete[] arr;
 	arr = new_arr;
 	size--;
 	return element;
 }
-int Vector::peek()
+template <typename T>T Vector<T>::peek()
 {
 	if (size == 0)
 	{
@@ -117,11 +127,11 @@ int Vector::peek()
 	}
 	return arr[0];
 }
-int Vector::count()
+template <typename T>int Vector<T>::count()
 {
 	return size;
 }
-int Vector::at(int index)
+template <typename T>T Vector<T>::at(int index)
 {
 	if (size == 0)
 	{
@@ -131,7 +141,7 @@ int Vector::at(int index)
 	return arr[index];
 }
 
-void Vector::deleteRange(int start, int end)
+template <typename T>void Vector<T>::deleteRange(int start, int end)
 {
 	if (size == 0)
 	{
@@ -147,7 +157,7 @@ void Vector::deleteRange(int start, int end)
 		}
 	}
 	int local_size = size - (end - start + 1);
-	int* new_arr = new int[local_size];
+	T* new_arr = new T[local_size];
 	for (int i = 0; i < start; i++)
 	{
 		new_arr[i] = arr[i];
@@ -160,14 +170,14 @@ void Vector::deleteRange(int start, int end)
 	arr = new_arr;
 	size = local_size;
 }
-void Vector::reverse()
+template <typename T>void Vector<T>::reverse()
 {
 	if (size == 0)
 	{
 		std::cout << "Error! Vector is empty.\n";
 		return;
 	}
-	int* new_arr = new int[size];
+	T* new_arr = new T[size];
 	for (int i = 0, j = size - 1; i < size; i++, j--)
 	{
 		new_arr[i] = arr[j];
@@ -177,20 +187,20 @@ void Vector::reverse()
 
 }
 
-Vector& Vector::operator=(const Vector& Second_Vector)
+template <typename T>Vector<T>& Vector<T>::operator=(const Vector<T>& Second_Vector)
 {
 	delete[] arr;
 	size = Second_Vector.size;
 	if (size == 0)
 		return *this;
-	arr = new int[size];
+	arr = new T[size];
 	for (int i = 0; i < size; i++)
 	{
 		arr[i] = Second_Vector.arr[i];
 	}
 	return *this;
 }
-bool Vector::operator<(const Vector& Second_Vector)
+template <typename T>bool Vector<T>::operator<(const Vector<T>& Second_Vector)
 {
 	if (size < Second_Vector.size)
 	{
@@ -212,11 +222,11 @@ bool Vector::operator<(const Vector& Second_Vector)
 	}
 	return false;
 }
-bool Vector::operator>(const Vector& Second_Vector)
+template <typename T>bool Vector<T>::operator>(const Vector<T>& Second_Vector)
 {
 	return !(*this < Second_Vector) && (*this != Second_Vector);
 }
-bool Vector::operator==(const Vector& Second_Vector)
+template <typename T>bool Vector<T>::operator==(const Vector<T>& Second_Vector)
 {
 	if (size == Second_Vector.size)
 	{
@@ -232,35 +242,24 @@ bool Vector::operator==(const Vector& Second_Vector)
 	}
 	return true;
 }
-bool Vector::operator!=(const Vector& Second_Vector)
+template <typename T>bool Vector<T>::operator!=(const Vector<T>& Second_Vector)
 {
 	return !(*this == Second_Vector);
 }
-bool Vector::operator<=(const Vector& Second_Vector)
+template <typename T>bool Vector<T>::operator<=(const Vector<T>& Second_Vector)
 {
 	if (*this < Second_Vector || *this == Second_Vector)
 		return true;
 	else
 		return false;
 }
-bool Vector::operator>=(const Vector& Second_Vector)
+template <typename T>bool Vector<T>::operator>=(const Vector<T>& Second_Vector)
 {
 	if (*this > Second_Vector || *this == Second_Vector)
 		return true;
 	else
 		return false;
 
-}
-
-std::ostream& operator<<(std::ostream& out, const Vector& This_Vector)
-{
-	for (int i = 0; i < This_Vector.size; i++)
-	{
-		out << "  " << This_Vector.arr[i];
-		if (i == (This_Vector.size - 1))
-			out << "\n";
-	}
-	return out;
 }
 int main()
 {}
