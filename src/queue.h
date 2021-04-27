@@ -1,4 +1,6 @@
-﻿#include <cstring>
+﻿#pragma once
+
+#include <cstring>
 #include <stdexcept>
 
 template <typename T>
