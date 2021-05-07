@@ -1,86 +1,99 @@
 ![state](https://github.com/michael2021-vlsu/ssw_lab_4sem/actions/workflows/c-cpp.yml/badge.svg)
 
-# ssw_lab_4sem
-Set of laboratory tasks for course of system software (4 semester)
-
-## lab_01
-
-Implementation of stack (LIFO)/queue(FIFO)/vector.  
-
 ## lab_02
 
-Implementation of single/double linked list, circular buffer.  
+Реализация таких структур данных как: односвязный, двусвязный список, кольцевой буфер.
 
-## lab_03  
+Данные структуры должны поддерживать следующие операции/свойства:
 
-Implementation of general tree and binary search tree. 
+- push - вставка элемента в структуру; [1]
+- pop - выталкивание элемента из структуры; [2]
+- insert - вставка элемента в произвольное место структуры;
+- erase - удаление элемента из произвольного места структуры;
+- begin - возврат указателя (итератора) на начало структуры (первого элемента);
+- end - возврат указателя (итератора) за конец структуры;
+- count - возврат количества элементов в структуре;
+- динамический размер - размер структуры должен увеличиваться при необходимости;[3]
+- операторы сравнения (>, <, !=, etc) - объекты структур должны поддерживать операции **лексикографического** сравнения;
+- не должны содержать в себе STL контейнеров;
 
-## lab_04
+Бонусы (не обязательно к выполнению):
 
-Implementation of map and hash-table.
-
-
-What we will be do:
-
-- build different structures of data;
-- compare our realization with STL;
-- implement arithmetic parser;
-
-
-## How work with this repository
-
-You have to **fork** this repository, create your **branch** and complete tasks. **All changes** you will be **commit** and **push** in your **forked repository**. After you make sure that everything works, you send **pull request** to **this** repository. For updating (synchronize) your copy (fork) repository, you have to **set upstream** to this repository, **fetch** changes **from the upstream** (this) repository, **merge** the changes **into your local** repository and **push** them **to your remote** repository.
-
-To work with *git* you should to use [Github client](https://desktop.github.com/) (*nix systems already have git CLI client) and [Git CLI](https://gitforwindows.org/). Google next terms:
-
-- `git clone`
-- `git add`
-- `git commit -m`
-- `git checkout`
-- `git merge`
-- `git pull`
-- `git push`
-- `git rebase`
-- `git log`
-- `git diff`
-- `git fetch`
-- `git remote`
+- перегрузка оператора потокового вывода (`<<`) - предоставить возможность вывода содержимого структуры используя подобную конструкцию: `std::cout << "Elements: " << my_structure;`
+- шаблонный интерфейс - структура является по своей сути контейнером, может содержать элементы любого типа (`my_structure<int> int_obj; my_structure<float> float_obj`);
+- поддержка *initialized_list* - реализация конструктора, поддерживающего *brace-list* инициализацию (`my_structure<int> int_obj {0, 1, 5, 2, 3}`);
+- использование умных указателей (*smart pointers*);
+- поддержка итератора - классы должны предоставлять интерфейс итератора для возможности прохода по элементам структуры.
 
 
-## Useful
 
-- [Git How To](https://githowto.com/ru/setup)
-- [Git Bash](https://gitforwindows.org/)
-- [Git Update fork](https://help.github.com/en/articles/syncing-a-fork)
-- [Google Code Style Guide](https://google.github.io/styleguide/cppguide.html)
-- [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
-- [C++ FAQ](https://isocpp.org/faq)
-- [Multi language online documentation](https://docs.w3cub.com/cpp/)
-- [Online C++ Benchmark](http://quick-bench.com/)
-- [Jetbrain Student License](https://www.jetbrains.com/shop/eform/students)
-- [MinGW](http://mingw-w64.org/doku.php)
-- [Cygwin](https://www.cygwin.com/)
-- [CMake](https://cmake.org/download/)
-- [Online BST constructor](https://www.cs.usfca.edu/~galles/visualization/BST.html)
-- [CppCheck](http://cppcheck.sourceforge.net/)
-- [Valgrind](https://valgrind.org/)
-- [WSL](https://docs.microsoft.com/ru-ru/windows/wsl/install-win10)
-  
+##### [1]: Вставка в начало и конец структуры; для кольцевого буфера реализуется только вставка в конец.
 
-## Issues
+##### [2]: Удаление из начала и конца структуры; для кольцевого буфера реализуется только удаление из начала.
 
-- [How to update your fork](https://stackoverflow.com/questions/20984802/how-can-i-keep-my-fork-in-sync-without-adding-a-separate-remote/21131381#21131381)
-- [How to setup Git in CLion](https://stackoverflow.com/questions/35087523/git-exe-error-while-loading-shared-libraries-cannot-open-shared-object-file)
-- [How to generate Visual Studio project files via CMake](https://preshing.com/20170511/how-to-build-a-cmake-based-project/)
-- [How to make friends our CMake with Visual Studio](https://www.youtube.com/watch?v=gYmgbqGfv-8)
-- [How to make friends CMake and Visual Studio[2]](https://docs.microsoft.com/ru-ru/cpp/build/cmake-projects-in-visual-studio?view=vs-2019)
-- [How to import CMake project in Qt Creator](https://codeyarns.com/2016/01/26/how-to-import-cmake-project-in-qt-creator/)
+##### [3]: За исключением реализации кольцевого буфера, для него размер задаётся пользователем.  
+
+------------------------------------
+
+### Что Вы должны сделать:
+
+Ниже представлен список **индивидуальных** заданий:
+
+- вариант 1:  
+  - сортировка Хоара (быстрая сортировка);
+  - реализация разбиения на две структуры по пороговому значению;[1]
+- вариант 2: 
+  - определение зациклинности списка;[2] 
+  - определение (поиск) порядкового номера элемента списка с заданным значением;[3]
+- вариант 3:  
+  - реализация слияния двух упорядоченных (по возрастанию) списков в один упорядоченный;
+  - вычленения из списка максимального и минимального элементов и формирование нового списка;[4]
+- вариант 4: реализация - 
+  - проверки вхождения одной структуры в другую посредством циклического сдвига элементов;[5]
+  - сортировка слиянием (*merge sort*).
+
+##### [1]: Разбиение списка на два в соответствии с заданным пороговым значением. Элементы с значениями, меньшими порогового, должны попасть в один список, остальные - в другой.
+
+##### [2]: Необходимо вдобавок реализовать метод "завязки" узлов в списке (для создания цикличности).
+
+##### [3]: Подразумевается возврат итератора/указателя на узел.
+
+##### [4]: Например, дан список с эл-ми {1, 2, 0, 6, 32, 3}, вызов метода`MinMaxList(..)` вернёт пару значений <0, 32>, и удалит из списка соответствующие элементы.
+
+##### [5]: Даны два списка. Проверить, может ли быть получен второй список в результате циклического сдвига элементов первого списка.
 
 
-# [Wiki](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki)
+** **
 
-- [Как сделать "форк" репозитория?](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki);
-- [А как мне обновить свой "форк"?](https://bit.ly/3fFPgFz);
-- [Не могу обновить свой форк из-за конфликта](https://bit.ly/3fIHRoR);
-- [FAQ и прочее по работам](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki);
+Ваши **структуры должны** поддерживать реализации индивидуальных заданий (если не было указано иное). 
+При этом, **решения индивидуальных заданий не должны являться методами** ваших классов (т.е. **решение задания - внешняя функция** взаимодействующая с вашей структурой).
 
+### Сборка
+
+Все представленные ниже инструкции используются для _*nix_ семейства ОС.  Для пользователей ОС Windows может понадобиться использование других инструкций (либо вы можете использовать *Cygwin* или *MinGW*).
+
+Для сборки с помощью `make` (Makefile):
+
+```bash
+$ cd <to repo path>/lab_02
+$ make
+```
+
+Для сборки с помощью `cmake` (CMakeLists.txt):
+
+```bash
+$ cd <to repo path>/lab_02
+$ cmake .
+$ make
+```
+
+### Отчёт
+
+В отчёте должно содержаться:
+
+- перечисление **выполненных** заданий;
+- листинг (код) программы;
+- тестирование программы;
+- сравнение производительности основных операций между вашими структурами и STL контейнерами;
+- вывод скомпилированной программы;
+- вывод по проделанной работе.
