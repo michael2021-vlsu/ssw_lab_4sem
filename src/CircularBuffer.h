@@ -4,67 +4,66 @@
 #include <iostream>
 #include <stdexcept>
 #include <iterator>
+#include <memory>
 
 template <typename T>
 class CircularBuffer {
-	T *items, *itemse, *pick, *place;
+	std::unique_ptr<T[]> items;
+	
+	T *itemse, *pick, *place;
+
 	unsigned int capacitance, stored_count;
 
 public:
 	CircularBuffer(unsigned int capacity):capacitance(capacity) {
 		if (!capacity) throw std::invalid_argument("Capacity must be at least 1!");
 
-		pick = place = items = reinterpret_cast<T *>(malloc(capacity * sizeof(T)));
-		if (!items) throw std::runtime_error("You don't have enough memory!");
+		items = std::unique_ptr<T[]>(new T[capacity]);
+		pick = place = items.get();
 
 		stored_count = 0;
-		itemse = items + capacity;
+		itemse = place + capacity;
 	}
 
 	CircularBuffer(const std::initializer_list<T> &list): capacitance(list.size()) {
 		if (!capacitance) throw std::invalid_argument("Capacity must be at least 1!");
-		stored_count = capacitance;
+		
+		items = std::unique_ptr<T[]>(new T[capacitance]);
+		pick = place = items.get();
 
-		pick = place = items = reinterpret_cast<T *>(malloc(capacitance * sizeof(T)));
-		if (!items) throw std::runtime_error("You don't have enough memory!");
-		itemse = items + capacitance;
+		stored_count = capacitance;
+		itemse = place + capacitance;
 
 		{
 			const T *citem = list.begin();
-			for (T *cwpos = items; cwpos != itemse; ++cwpos, ++citem)
+			for (T *cwpos = pick; cwpos != itemse; ++cwpos, ++citem)
 				*cwpos = *citem;
 		}
 	}
 
 	CircularBuffer(const CircularBuffer &arg): capacitance(arg.capacitance), stored_count(arg.stored_count) {
-		items = reinterpret_cast<T *>(malloc(capacitance * sizeof(T)));
-		if (!items) throw std::runtime_error("You don't have enough memory!");
-		itemse = items + capacitance;
+		items = std::unique_ptr<T[]>(new T[capacitance]);
+		itemse = items.get() + capacitance;
 
-		place = items + (arg.place - arg.items);
-		pick = items + (arg.pick - arg.items);
+		place = items.get() + (arg.place - arg.items.get());
+		pick = items.get() + (arg.pick - arg.items.get());
 
-		memcpy(items, arg.items, capacitance * sizeof(T));
+		memcpy(items.get(), arg.items.get(), capacitance * sizeof(T));
 	}
 
 	CircularBuffer &operator=(const CircularBuffer &arg) {
 		capacitance = arg.capacitance;
 		stored_count = arg.stored_count;
-		
-		items = reinterpret_cast<T *>(malloc(capacitance * sizeof(T)));
-		if (!items) throw std::runtime_error("You don't have enough memory!");
-		itemse = items + capacitance;
 
-		place = items + (arg.place - arg.items);
-		pick = items + (arg.pick - arg.items);
+		items = std::unique_ptr<T[]>(new T[capacitance]);
+		itemse = items.get() + capacitance;
 
-		memcpy(items, arg.items, capacitance * sizeof(T));
+		place = items.get() + (arg.place - arg.items.get());
+		pick = items.get() + (arg.pick - arg.items.get());
+
+		memcpy(items.get(), arg.items.get(), capacitance * sizeof(T));
 
 		return *this;
-	}
-
-	~CircularBuffer() {
-		free(items);
 	}
 
 	void emplace(const T &item) {
@@ -72,21 +71,21 @@ public:
 			if (stored_count) { //Ring is full, rewriting
 				new (place) T(item); //Assigning an item to a memory address.
 				if (++pick == itemse) {
-					pick = items;
+					pick = items.get();
 				}
 				place = pick;
 			} else { // Ring is empty, all is ok
 				new (place) T(item); //Assigning an item to a memory address.
 				++stored_count;
 				if (++place == itemse) {
-					place = items;
+					place = items.get();
 				}
 			}
 		} else {
 			new (place) T(item); //Assigning an item to a memory address.
 			++stored_count;
 			if (++place == itemse) {
-				place = items;
+				place = items.get();
 			}
 		}
 	}
@@ -101,20 +100,20 @@ public:
 		//Getting empty place
 		if (place == pick) {
 			if (++pick == itemse) {
-				pick = items;
+				pick = items.get();
 			}
 			--must_steps; //It is necessary to account for the change in index from the deletion of the oldest element
 		} else
 			++stored_count;
 
 		if (++place == itemse) {
-			place = items;
+			place = items.get();
 		}
 
 		//Shifting items
 		for (unsigned int cstep = 0; cstep != must_steps; ++cstep) {
 			front = back;
-			if (--back < items) {
+			if (--back < items.get()) {
 				back = itemse - 1;
 			}
 			*front = *back;
@@ -134,11 +133,11 @@ public:
 		//Moving to needed item
 		for (unsigned int cstep = 0; cstep != index; ++cstep) {
 			if (++front == itemse) {
-				front = items;
+				front = items.get();
 			}
 		}
 
-		if (--place < items) {
+		if (--place < items.get()) {
 			place = itemse - 1;
 		}
 
@@ -146,7 +145,7 @@ public:
 		while (front != place) 	{
 			back = front;
 			if (++front == itemse) {
-				front = items;
+				front = items.get();
 			}
 			*back = *front;
 		}
@@ -171,7 +170,7 @@ public:
 			T *item = pick;
 			--stored_count;
 			if (++pick == itemse) {
-				pick = items;
+				pick = items.get();
 			}
 			return *item;
 		} else
@@ -196,9 +195,9 @@ public:
 					return false;
 
 				if (++pk == itemse)
-					pk = items;
+					pk = items.get();
 				if (++pk2 == arg.itemse)
-					pk2 = arg.items;
+					pk2 = arg.items.get();
 			} while (pk != em);
 		}
 
@@ -217,17 +216,17 @@ public:
 					return false;
 
 				if (++pk == itemse)
-					pk = items;
+					pk = items.get();
 				if (pk == em) return false;
 				if (++pk2 == arg.itemse)
-					pk2 = arg.items;
+					pk2 = arg.items.get();
 				if (pk2 == em2) return true;
 			}
 		}
 
 		return false;
 	}
-	
+
 	bool operator!=(const CircularBuffer &arg) const {
 		return !(*this == arg);
 	}
@@ -319,11 +318,11 @@ public:
 	};
 
 	iterator begin() const {
-		return iterator(pick, items, itemse, 0, stored_count);
+		return iterator(pick, items.get(), itemse, 0, stored_count);
 	}
 
 	iterator end() const {
-		return iterator(place, items, itemse, stored_count, stored_count);
+		return iterator(place, items.get(), itemse, stored_count, stored_count);
 	}
 
 	CircularBuffer merge_with_sorted(const CircularBuffer &buffer) const {
