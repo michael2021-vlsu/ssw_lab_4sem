@@ -189,7 +189,7 @@ public:
 
 		if (stored_count) {
 			T *pk = pick, *em = place;
-			T *pk2 = arg.pick, *em2 = arg.place;
+			T *pk2 = arg.pick;
 
 			do {
 				if (*pk != *pk2)
@@ -199,7 +199,7 @@ public:
 					pk = items;
 				if (++pk2 == arg.itemse)
 					pk2 = arg.items;
-			} while (pk != em && pk2 != em2);
+			} while (pk != em);
 		}
 
 		return true;
@@ -213,6 +213,8 @@ public:
 			while (true) {
 				if (*pk > *pk2)
 					return true;
+				else if (*pk < *pk2)
+					return false;
 
 				if (++pk == itemse)
 					pk = items;
