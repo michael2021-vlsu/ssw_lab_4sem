@@ -2,6 +2,9 @@
 #include <queue>
 #include <vector>
 #include <stack>
+#include <ctime>
+#include <cstdlib>
+#include <algorithm>
 
 #include <chrono>
 
@@ -11,7 +14,21 @@
 
 using namespace std;
 
+void UnitTest_Queue();
+void UnitTest_Vector(const std::string &struct_name);
+void UnitTest_Stack();
+
+
 int main() {
+	srand(time(nullptr));
+
+	cout << "Unit tests:" << endl;
+	UnitTest_Queue();
+	UnitTest_Vector("vector");
+	UnitTest_Stack();
+
+	cout << endl << "Perfomance tests:" << endl;
+
 	/* Queue region */
 	std::queue<float> q1;
 	std::chrono::high_resolution_clock::time_point begin = std::chrono::high_resolution_clock::now();
@@ -103,4 +120,276 @@ int main() {
 	std::cout << "The Stack.h time: " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << " us\n";
 	
 	return 0;
+}
+
+/* UNIT TEST - QUEUE */
+void UnitTest_Queue() {
+	queue<float> q1;
+	Queue<float> q2;
+
+	float tmp1, tmp3;
+	int tmp2;
+	for (unsigned short i = 0; i != 5000; ++i) {
+		tmp2 = abs(rand()) % 50;
+		if (tmp2 == 0) { //Reverse
+			if (tmp2 = q2.count()) {
+				q2.reverse();
+
+				stack<float> st;
+				for (unsigned short j = 0; j != tmp2; ++j) {
+					st.push(q1.front());
+					q1.pop();
+				}
+				for (unsigned short j = 0; j != tmp2; ++j) {
+					q1.push(st.top());
+					st.pop();
+				}
+			}
+		} else if (tmp2 == 2) { //Delete Range
+			if (tmp2 = q2.count()) {
+				tmp1 = rand() / 32767.0;
+				tmp3 = tmp1 + rand() / 65535.0;
+				q2.removeInRange(tmp1, tmp3);
+
+				vector<float> st;
+				for (unsigned short j = 0; j != tmp2; ++j) {
+					if (q1.front() < tmp1 || q1.front() > tmp3)
+						st.push_back(q1.front());
+					q1.pop();
+				}
+				for (unsigned short j = 0; j != tmp2; ++j) {
+					q1.push(st[j]);
+				}
+			}
+		} else if (tmp2 == 3) { //capacity
+			tmp2 = q2.count() + rand() % 15;
+			q2.capacity(tmp2 ? tmp2 : 1);
+		} else if (tmp2 < 25) { //Push
+			tmp1 = rand() / 3.0;
+
+			try {
+				q1.push(tmp1);
+				q2.push(tmp1);
+			} catch (const std::exception &) {
+				cout << "queue: 1 - fail! push" << " | Test #" << i << endl;
+				return;
+			}
+		} else { //Pop
+			if (q1.size() != q2.count()) {
+				cout << "queue: 1 - fail! pop1" << " | Test #" << i << endl;
+				return;
+			}
+
+			if (q2.count() != 0) {
+				try {
+					tmp1 = q1.front();
+					q1.pop();
+
+					if (tmp1 != q2.peek()) {
+						cout << "queue: 1 - fail! pop2" << " | Test #" << i << endl;
+						return;
+					}
+					if (tmp1 != q2.pop()) {
+						cout << "queue: 1 - fail! pop3" << " | Test #" << i << endl;
+						return;
+					}
+				} catch (const std::exception &) {
+					cout << "queue: 1 - fail! pop4" << " | Test #" << i << endl;
+					return;
+				}
+			}
+		}
+	}
+
+	Queue<int> q3(10), q4(8);
+
+	for (unsigned short i = 0; i != 10; ++i) {
+		//Making a circular offset
+		for (unsigned short j = 0; j != 3; ++j) {
+			q3.push(0);
+			q4.push(0);
+		}
+		for (unsigned short j = 0; j != 3; ++j) {
+			q3.pop();
+			q4.pop();
+		}
+
+		q3.push(1); q3.push(3); q3.push(2); q3.push(4);
+		q4.push(1); q4.push(3); q4.push(2); q4.push(4);
+		if (q3 != q4 || !(q3 == q4) || !(q3 <= q4) || !(q3 >= q4)) {
+			cout << "queue: 2 - fail! 1" << " | Test #" << i << endl;
+			return;
+		}
+		q3.pop(); q3.pop(); q3.pop(); q3.pop();
+		q4.pop(); q4.pop(); q4.pop(); q4.pop();
+
+		q3.push(1); q3.push(3); q3.push(3); q3.push(4);
+		q4.push(1); q4.push(3); q4.push(2); q4.push(4);
+		if (q3 < q4 || q3 <= q4) {
+			cout << "queue: 2 - fail! 2" << " | Test #" << i << endl;
+			return;
+		}
+
+		if (!(q3 > q4) || !(q3 >= q4) ) {
+			cout << "queue: 2 - fail! 3" << " | Test #" << i << endl;
+			return;
+		}
+
+		q3.pop(); q3.pop(); q3.pop(); q3.pop();
+		q4.pop(); q4.pop(); q4.pop(); q4.pop();
+	}
+
+	cout << "queue: passed!" << endl;
+}
+
+/* UNIT TEST - VECTOR */
+void UnitTest_Vector(const std::string &struct_name) {
+	vector<float> v1; //Reference STD vector
+	Vector<float> v2; //Testing vector
+
+	float tmp1, tmp3;
+	int tmp2;
+	for (unsigned short i = 0; i != 5000; ++i) {
+		tmp2 = abs(rand()) % 70;
+		if (tmp2 == 0) { //Reverse
+			if (tmp2 = v2.count()) {
+				v2.reverse();
+
+				std::reverse(v1.begin(), v1.end()); //Reverse reference vector
+			}
+		} else if (tmp2 == 2) { //Delete Range
+			if (tmp2 = v2.count()) {
+				tmp1 = rand() / 32767.0;
+				tmp3 = tmp1 + rand() / 16535.0;
+				
+				v2.deleteRange(tmp1, tmp3);
+
+				vector<float> tvec;
+				for (auto bg = v1.begin(), ed = v1.end(); bg != ed; ++bg) { //Go for all items in reference vector
+					if (*bg < tmp1 || *bg > tmp3) //Check item's range condition
+						tvec.push_back(*bg); //If ok, copy item to new vector
+				}
+				v1 = tvec; //Update reference vector
+			}
+		} else if (tmp2 < 10) { //at
+			if (v1.size() != v2.count()) {
+				cout << struct_name << ": 1 - fail! at1" << " | Test #" << i << endl;
+				return;
+			}
+
+			if (v2.count() != 0) {
+				tmp2 = abs(rand()) % v2.count();
+
+				if (v1.at(tmp2) != v2.at(tmp2)) {
+					cout << struct_name << ": 1 - fail! at2" << " | Test #" << i << endl;
+					return;
+				}
+			}
+		} else if (tmp2 < 25) { //Push_back
+			tmp1 = rand() / 3.0;
+
+			try {
+				v1.push_back(tmp1);
+				v2.push_back(tmp1);
+			} catch (const std::exception &) {
+				cout << struct_name << ": 1 - fail! push_back" << " | Test #" << i << endl;
+				return;
+			}
+		} else if (tmp2 < 40) { //Push_front
+			tmp1 = rand() / 3.0;
+
+			try {
+				v1.push_back(tmp1);
+				v2.push_back(tmp1);
+			} catch (const std::exception &) {
+				cout << struct_name << ": 1 - fail! push_front" << " | Test #" << i << endl;
+				return;
+			}
+		} else if (tmp2 < 55) { //Pop_back
+			if (v1.size() != v2.count()) {
+				cout << struct_name << ": 1 - fail! pop_back1" << " | Test #" << i << endl;
+				return;
+			}
+
+			if (v2.count() != 0) {
+				try {
+					tmp1 = v1.back();
+					v1.pop_back();
+
+					if (tmp1 != v2.pop_back()) {
+						cout << struct_name << ": 1 - fail! pop_back2" << " | Test #" << i << endl;
+						return;
+					}
+				} catch (const std::exception &) {
+					cout << struct_name << ": 1 - fail! pop_back3" << " | Test #" << i << endl;
+					return;
+				}
+			}
+		} else if (tmp2 < 70) { //Pop_front
+			if (v1.size() != v2.count()) {
+				cout << struct_name << ": 1 - fail! pop_front1" << " | Test #" << i << endl;
+				return;
+			}
+
+			if (v2.count() != 0) {
+				try {
+					tmp1 = v1.front();
+					v1.erase(v1.begin());
+
+					if (tmp1 != v2.pop_front()) {
+						cout << struct_name << ": 1 - fail! pop_front2" << " | Test #" << i << endl;
+						return;
+					}
+				} catch (const std::exception &) {
+					cout << struct_name << ": 1 - fail! pop_front3" << " | Test #" << i << endl;
+					return;
+				}
+			}
+		}
+	}
+
+	Vector<int> v3, v4;
+
+	for (unsigned short i = 0; i != 10; ++i) {
+		//Making a circular offset
+		for (unsigned short j = 0; j != 3; ++j) {
+			v3.push_back(0);
+			v4.push_back(0);
+		}
+		for (unsigned short j = 0; j != 3; ++j) {
+			v3.pop_front();
+			v4.pop_front();
+		}
+
+		v3.push_back(1); v3.push_back(3); v3.push_back(2); v3.push_back(4);
+		v4.push_back(1); v4.push_back(3); v4.push_back(2); v4.push_back(4);
+		if (v3 != v4 || !(v3 == v4) || !(v3 <= v4) || !(v3 >= v4)) {
+			cout << struct_name + ": 2 - fail! 1" << " | Test #" << i << endl;
+			return;
+		}
+		v3.pop_front(); v3.pop_front(); v3.pop_front(); v3.pop_front();
+		v4.pop_front(); v4.pop_front(); v4.pop_front(); v4.pop_front();
+
+		v3.push_back(1); v3.push_back(3); v3.push_back(3); v3.push_back(4);
+		v4.push_back(1); v4.push_back(3); v4.push_back(2); v4.push_back(4);
+		if (v3 < v4 || v3 <= v4) {
+			cout << struct_name << ": 2 - fail! 2" << " | Test #" << i << endl;
+			return;
+		}
+
+		if (!(v3 > v4) || !(v3 >= v4)) {
+			cout << struct_name << ": 2 - fail! 3" << " | Test #" << i << endl;
+			return;
+		}
+
+		v3.pop_front(); v3.pop_front(); v3.pop_front(); v3.pop_front();
+		v4.pop_front(); v4.pop_front(); v4.pop_front(); v4.pop_front();
+	}
+
+	cout << struct_name << ": passed!" << endl;
+}
+
+
+void UnitTest_Stack() {
+	UnitTest_Vector("stack");
 }
