@@ -350,7 +350,7 @@ public:
 	}
 
 	CircularBuffer get_min_max() {
-		if (!stored_count) throw std::underflow_error("Buffer is empty!");
+		if (stored_count < 2) throw std::underflow_error("Count of elements must be at least 2!");
 
 		CircularBuffer<T>::iterator it = begin(), min = it, max = it++;
 
