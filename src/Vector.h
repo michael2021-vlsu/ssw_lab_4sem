@@ -21,7 +21,7 @@ public:
 	T at(int); //Get element with index
 
 	//Individual tasks
-	void deleteRange(int, int); //Delete given range
+	void deleteRange(T, T); //Delete given range
 	void reverse(); //Reverse order of elements
 
 	//Lexicographic overloading of operators
@@ -38,6 +38,8 @@ public:
 	{
 		for (int i = 0; i < This_Vector.size; i++)
 		{
+			if (i%10==0)
+				out << "\n";
 			out << "  " << This_Vector.arr[i];
 			if (i == (This_Vector.size - 1))
 				out << "\n";
@@ -89,7 +91,7 @@ template <typename T>T Vector<T>::pop_front()
 		return 0;
 	}
 	T* new_arr = new T[size - 1];
-	for (int i = 0; i < size - 1; i++)
+	for (int i = 0; i < (size - 1); i++)
 	{
 		new_arr[i] = arr[i + 1];
 	}
@@ -108,7 +110,7 @@ template <typename T>T Vector<T>::pop_back()
 		return 0;
 	}
 	T* new_arr = new T[size - 1];
-	for (int i = 0; i < size - 1; i++)
+	for (int i = 0; i < (size - 1); i++)
 	{
 		new_arr[i] = arr[i];
 	}
@@ -142,7 +144,7 @@ template <typename T>T Vector<T>::at(int index)
 	return arr[index];
 }
 
-template <typename T>void Vector<T>::deleteRange(int start, int end)
+template <typename T>void Vector<T>::deleteRange(T start, T end)
 {
 	if (size == 0)
 	{
@@ -151,25 +153,32 @@ template <typename T>void Vector<T>::deleteRange(int start, int end)
 	}
 	else
 	{
-		if ((size < end || size < start) || (start > end) || (start < 0))
+		if (start > end)
 		{
 			std::cout << "Error! Range is incorrect.\n";
 			return;
 		}
 	}
-	int local_size = size - (end - start + 1);
-	T* new_arr = new T[local_size];
-	for (int i = 0; i < start; i++)
+
+	int k = 0;
+	for (int i = 0; i < size; i++)
 	{
-		new_arr[i] = arr[i];
+		if (arr[i] < start || arr[i]>end) {
+			k++;
+		}
 	}
-	for (int i = start, j = end + 1; i < local_size, j < size; i++, j++)
+	T* new_arr = new T[k];
+	k = 0;
+	for (int i = 0; i < size; i++)
 	{
-		new_arr[i] = arr[j];
+		if (arr[i] < start || arr[i]>end) {
+			new_arr[k] = arr[i];
+			k++;
+		}
 	}
 	delete[] arr;
 	arr = new_arr;
-	size = local_size;
+	size = k;
 }
 template <typename T>void Vector<T>::reverse()
 {
