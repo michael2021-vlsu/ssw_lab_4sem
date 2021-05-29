@@ -19,7 +19,7 @@ public:
 	}
 
 	int count() {
-		Vector<T>::count();
+		return Vector<T>::count();
 	}
 
 	void deleteRange(int min, int max) {
