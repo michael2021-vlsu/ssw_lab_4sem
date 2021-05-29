@@ -1,4 +1,2 @@
 #include "Vector.h"
-
-int main()
-{}
+int main(){}
