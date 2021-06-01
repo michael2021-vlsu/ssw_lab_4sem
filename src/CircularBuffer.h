@@ -156,12 +156,10 @@ public:
 	}
 
 	void insert(unsigned int index, T item) {
-		const T &ref = item;
 		emplace(index, item);
 	}
 
 	void push(T item) {
-		const T &ref = item;
 		emplace(item);
 	}
 
