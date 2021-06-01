@@ -1,86 +1,87 @@
 ![state](https://github.com/michael2021-vlsu/ssw_lab_4sem/actions/workflows/c-cpp.yml/badge.svg)
 
-# ssw_lab_4sem
-Set of laboratory tasks for course of system software (4 semester)
-
-## lab_01
-
-Implementation of stack (LIFO)/queue(FIFO)/vector.  
-
-## lab_02
-
-Implementation of single/double linked list, circular buffer.  
-
-## lab_03  
-
-Implementation of general tree and binary search tree. 
-
 ## lab_04
 
-Implementation of map and hash-table.
+Реализация таких нелинейных структур данных как: словарь, хеш-таблица.
 
+Данные структуры должны поддерживать следующие операции/свойства:
 
-What we will be do:
+- emplace - вставка элемента в структуру; [1]
+- erase - удаление элемента из структуры;
+- find - поиск элемента в структуре;
+- count - возврат количества элементов в структуре;
+- динамический размер - размер структуры должен увеличиваться при необходимости;
+- операторы сравнения (>, <, !=, etc) - объекты структур должны поддерживать операции **лексикографического** сравнения;
 
-- build different structures of data;
-- compare our realization with STL;
-- implement arithmetic parser;
+Бонусы (не обязательно к выполнению):
 
+- перегрузка оператора потокового вывода (`<<`) - предоставить возможность вывода содержимого структуры используя подобную конструкцию: `std::cout << "Elements: " << my_structure;`
+- шаблонный интерфейс - структура является по своей сути контейнером, может содержать элементы любого типа (`my_structure<int> int_obj; my_structure<float> float_obj`);
+- поддержка *initialized_list* - реализация конструктора, поддерживающего *brace-list* инициализацию (`my_structure<int> int_obj {0, 1, 5, 2, 3}`);
+- использование умных указателей (*smart pointers*);
+- поддержка итератора - классы должны предоставлять интерфейс итератора для возможности прохода по элементам структуры;
 
-## How work with this repository
+##### [1]: В словаре не должно быть дубликатов. В хеш-таблице попытка вставки дубликата <u>обновляет</u> значение.
 
-You have to **fork** this repository, create your **branch** and complete tasks. **All changes** you will be **commit** and **push** in your **forked repository**. After you make sure that everything works, you send **pull request** to **this** repository. For updating (synchronize) your copy (fork) repository, you have to **set upstream** to this repository, **fetch** changes **from the upstream** (this) repository, **merge** the changes **into your local** repository and **push** them **to your remote** repository.
+-----------------------------
 
-To work with *git* you should to use [Github client](https://desktop.github.com/) (*nix systems already have git CLI client) and [Git CLI](https://gitforwindows.org/). Google next terms:
+### Что Вы должны сделать:
 
-- `git clone`
-- `git add`
-- `git commit -m`
-- `git checkout`
-- `git merge`
-- `git pull`
-- `git push`
-- `git rebase`
-- `git log`
-- `git diff`
-- `git fetch`
-- `git remote`
+В данной работе реализация словаря и хеш-таблицы **разбивается** **на** следующие **варианты**:
 
+- **словарь** (далее С) - реализуют те, у кого **2, 4 вариант;**
 
-## Useful
+- **хеш-таблица** (далее Х) - реализуют те, у кого **1, 3 вариант**.
 
-- [Git How To](https://githowto.com/ru/setup)
-- [Git Bash](https://gitforwindows.org/)
-- [Git Update fork](https://help.github.com/en/articles/syncing-a-fork)
-- [Google Code Style Guide](https://google.github.io/styleguide/cppguide.html)
-- [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
-- [C++ FAQ](https://isocpp.org/faq)
-- [Multi language online documentation](https://docs.w3cub.com/cpp/)
-- [Online C++ Benchmark](http://quick-bench.com/)
-- [Jetbrain Student License](https://www.jetbrains.com/shop/eform/students)
-- [MinGW](http://mingw-w64.org/doku.php)
-- [Cygwin](https://www.cygwin.com/)
-- [CMake](https://cmake.org/download/)
-- [Online BST constructor](https://www.cs.usfca.edu/~galles/visualization/BST.html)
-- [CppCheck](http://cppcheck.sourceforge.net/)
-- [Valgrind](https://valgrind.org/)
-- [WSL](https://docs.microsoft.com/ru-ru/windows/wsl/install-win10)
-  
+Для заполнения структур вы обязаны использовать подготовленные наборы данных (для С файл - *names.txt*, для Х файл - *cities.txt*). 
 
-## Issues
+Ниже представлен список **индивидуальных** заданий:
 
-- [How to update your fork](https://stackoverflow.com/questions/20984802/how-can-i-keep-my-fork-in-sync-without-adding-a-separate-remote/21131381#21131381)
-- [How to setup Git in CLion](https://stackoverflow.com/questions/35087523/git-exe-error-while-loading-shared-libraries-cannot-open-shared-object-file)
-- [How to generate Visual Studio project files via CMake](https://preshing.com/20170511/how-to-build-a-cmake-based-project/)
-- [How to make friends our CMake with Visual Studio](https://www.youtube.com/watch?v=gYmgbqGfv-8)
-- [How to make friends CMake and Visual Studio[2]](https://docs.microsoft.com/ru-ru/cpp/build/cmake-projects-in-visual-studio?view=vs-2019)
-- [How to import CMake project in Qt Creator](https://codeyarns.com/2016/01/26/how-to-import-cmake-project-in-qt-creator/)
+- вариант 1: реализация - 
+  - слияния хеш-таблиц;
+  - вывода городов в обратном алфавитном порядке;
+- вариант 2: выдать - 
+  - все номера для людей с одинаковой фамилией;
+  - самое длинное <u>имя</u>;[1]
+- вариант 3: реализовать -  
+  - выдачу имен городов, расположенных в одной (указанной) стране;
+  - проверку, входит ли указанный город в указанную страну;
+- вариант 4: реализация - 
+  - слияния словарей;
+  - обмена словарей (*swap*).
 
+##### [1]: Вместе с номером, фамилией и отчеством. Например: имеется строка `Feodalov Alexsandr Petro, 81234567890`, чьё имя (`Alexsandr`) является самым длинным в словаре, соответственно функция выведет в консоль полную информацию (ФИО и номер). Если таких имён несколько - вывести все.
 
-# [Wiki](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki)
+** **
 
-- [Как сделать "форк" репозитория?](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki);
-- [А как мне обновить свой "форк"?](https://bit.ly/3fFPgFz);
-- [Не могу обновить свой форк из-за конфликта](https://bit.ly/3fIHRoR);
-- [FAQ и прочее по работам](https://github.com/GOOD-Stuff/ssw_lab_4sem/wiki);
+Ваши **структуры должны** поддерживать реализации индивидуальных заданий (если не было указано иное).  При этом, **решения индивидуальных заданий не должны являться методами** ваших классов (т.е. **решение задания - внешняя функция** взаимодействующая с вашей структурой). Помимо обязательного интерфейса (общее задание) вы можете реализовать свои дополнительные методы для решения задач. 
 
+### Сборка
+
+Все представленные ниже инструкции используются для _*nix_ семейства ОС.  Для пользователей ОС Windows может понадобиться использование других инструкций (либо вы можете использовать *Cygwin* или *MinGW*).
+
+Для сборки с помощью `make` (Makefile):
+
+```bash
+$ cd <to repo path>/lab_04
+$ make
+```
+
+Для сборки с помощью `cmake` (CMakeLists.txt):
+
+```bash
+$ cd <to repo path>/lab_04
+$ cmake .
+$ make
+```
+
+### Отчёт
+
+В отчёте должно содержаться:
+
+- перечисление **выполненных** заданий;
+- листинг (код) программы;
+- тестирование программы;
+- получение производительности основных операций ваших структур;
+- вывод скомпилированной программы;
+- вывод по проделанной работе.
