@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef STD_CircularBuffer_D679BA40CEC24336AE47CA16782DFFBA
+#define STD_CircularBuffer_D679BA40CEC24336AE47CA16782DFFBA
+
 #include <queue>
 #include <vector>
 
@@ -90,3 +93,5 @@ public:
 		}
 	}
 };
+
+#endif

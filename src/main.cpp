@@ -21,8 +21,7 @@ void UnitTest_DoubleLinkedList();
 void UnitTest_SingleLinkedList();
 
 int main() {
-	//srand(time(nullptr));
-	srand(2);
+	srand(time(nullptr));
 
 	cout << "Unit tests:" << endl;
 	UnitTest_CircularBuffer();
@@ -170,7 +169,8 @@ void UnitTest_CircularBuffer() {
 				cb1.from_vector(cvec);
 			}
 		} else if (tmp2 < 10) { //Erase
-			if (tmp2 = cb2.count()) {
+			tmp2 = cb2.count();
+			if (tmp2 != 0) {
 				tmp2 = rand() % cb2.count();
 				
 				cb1.erase(tmp2);
@@ -180,7 +180,8 @@ void UnitTest_CircularBuffer() {
 			tmp1 = rand() / 3.0;
 
 			try {
-				if (tmp2 = cb2.count()) {
+				tmp2 = cb2.count();
+				if (tmp2 != 0) {
 					tmp2 = rand() % cb2.count();
 
 					cb1.insert(tmp2, tmp1);
@@ -331,7 +332,8 @@ void UnitTest_DoubleLinkedList() {
 				cb1.erase(max);
 			}
 		} else if (tmp2 < 10) { //Erase
-			if (tmp2 = cb2.count()) {
+			tmp2 = cb2.count();
+			if (tmp2 != 0) {
 				tmp2 = rand() % cb2.count();
 
 				auto itemp = cb1.begin();
@@ -344,7 +346,8 @@ void UnitTest_DoubleLinkedList() {
 			tmp1 = rand() / 3.0;
 
 			try {
-				if (tmp2 = cb2.count()) {
+				tmp2 = cb2.count();
+				if (tmp2 != 0) {
 					tmp2 = rand() % cb2.count();
 
 					auto itemp = cb1.begin();
@@ -530,7 +533,8 @@ void UnitTest_SingleLinkedList() {
 				cb1.erase(max);
 			}
 		} else if (tmp2 < 10) { //Erase
-			if (tmp2 = cb2.count()) {
+			tmp2 = cb2.count();
+			if (tmp2 != 0) {
 				tmp2 = rand() % cb2.count();
 
 				auto itemp = cb1.begin();
@@ -543,7 +547,8 @@ void UnitTest_SingleLinkedList() {
 			tmp1 = rand() / 3.0;
 
 			try {
-				if (tmp2 = cb2.count()) {
+				tmp2 = cb2.count();
+				if (tmp2 != 0) {
 					tmp2 = rand() % cb2.count();
 
 					auto itemp = cb1.begin();

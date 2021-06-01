@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef DoubleLinkedList_D679BA40CEC24336AE47CA16782DFFBA
+#define DoubleLinkedList_D679BA40CEC24336AE47CA16782DFFBA
+
 #include <cstring>
 #include <iostream>
 #include <stdexcept>
@@ -258,8 +261,8 @@ public:
 		if (*(--fempty) != lck) {
 			*(lck->me) = *fempty;
 			(*fempty)->me = lck->me;
-			fempty->reset();
 		}
+		fempty->reset();
 
 		--stored_count;
 	}
@@ -295,8 +298,9 @@ public:
 			if (*(--fempty) != lck) {
 				*(lck->me) = *fempty;
 				(*fempty)->me = lck->me;
-				fempty->reset();
 			}
+			fempty->reset();
+
 			--stored_count;
 
 			return item;
@@ -316,8 +320,9 @@ public:
 			if (*(--fempty) != lck) {
 				*(lck->me) = *fempty;
 				(*fempty)->me = lck->me;
-				fempty->reset();
 			}
+			fempty->reset();
+
 			--stored_count;
 
 			return item;
@@ -525,3 +530,5 @@ std::ostream &operator<<(std::ostream &out, const DoubleLinkedList<T> &buffer) {
 	}
 	return out;
 }
+
+#endif

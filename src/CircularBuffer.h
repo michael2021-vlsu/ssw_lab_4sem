@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef CircularBuffer_D679BA40CEC24336AE47CA16782DFFBA
+#define CircularBuffer_D679BA40CEC24336AE47CA16782DFFBA
+
 #include <cstring>
 #include <iostream>
 #include <stdexcept>
@@ -380,3 +383,5 @@ std::ostream &operator<<(std::ostream &out, const CircularBuffer<T> &buffer) {
 	}
 	return out;
 }
+
+#endif
