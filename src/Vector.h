@@ -1,6 +1,8 @@
 #ifndef VECTOR
 #define VECTOR
 #include <iostream>
+#include <exception>
+
 template <typename T>
 class Vector
 {
@@ -45,15 +47,15 @@ public:
 		}
 		return out;
 	}
-
-
 };
+
 template <typename T>
 Vector<T>::Vector()
 {
 	size = 0;
 	arr = 0;
 }
+
 template <typename T>
 Vector<T>::Vector(const Vector& vector)
 {
@@ -88,6 +90,7 @@ void Vector<T>::push_front(T element)
 	arr = new_arr;
 	size++;
 }
+
 template <typename T>
 void Vector<T>::push_back(T element)
 {
@@ -101,12 +104,12 @@ void Vector<T>::push_back(T element)
 	arr = new_arr;
 	size++;
 }
+
 template <typename T>
 T Vector<T>::pop_front()
 {
 	if (size == 0)
 	{
-		std::cout << "Error! Vector is empty.\n";
 		throw std::underflow_error("Error! Vector is empty.");
 	}
 	T* new_arr = new T[size - 1];
@@ -121,12 +124,12 @@ T Vector<T>::pop_front()
 	size--;
 	return element;
 }
+
 template <typename T>
 T Vector<T>::pop_back()
 {
 	if (size == 0)
 	{
-		std::cout << "Error! Vector is empty.\n";
 		throw std::underflow_error("Error! Vector is empty.");
 	}
 	T* new_arr = new T[size - 1];
@@ -141,27 +144,28 @@ T Vector<T>::pop_back()
 	size--;
 	return element;
 }
+
 template <typename T>
 T Vector<T>::peek()
 {
 	if (size == 0)
 	{
-		std::cout << "Error! Vector is empty.\n";
 		throw std::underflow_error("Error! Vector is empty.");
 	}
 	return arr[0];
 }
+
 template <typename T>
 int Vector<T>::count()
 {
 	return size;
 }
+
 template <typename T>
 T& Vector<T>::at(int index)
 {
 	if ((size == 0)||(index < 0 || index >= size))
 	{
-		std::cout << "Error! Vector is empty.\n";
 		throw std::underflow_error("Error! Vector is empty.");
 	}
 	return arr[index];
@@ -172,15 +176,13 @@ void Vector<T>::deleteRange(T start, T end)
 {
 	if (size == 0)
 	{
-		std::cout << "Error! Vector is empty.\n";
 		throw std::underflow_error("Error! Vector is empty.");
 	}
 	else
 	{
 		if (start > end)
 		{
-			std::cout << "Error! Range is incorrect.\n";
-			throw std::underflow_error("Error! Range is incorrect.");
+			throw std::out_of_range("Error! Range is incorrect.");
 		}
 	}
 
@@ -203,12 +205,13 @@ void Vector<T>::deleteRange(T start, T end)
 	delete[] arr;
 	arr = new_arr;
 	size = k;
-}template <typename T>
+}
+
+template <typename T>
 void Vector<T>::reverse()
 {
 	if (size == 0)
 	{
-		std::cout << "Error! Vector is empty.\n";
 		throw std::underflow_error("Error! Vector is empty.");
 	}
 	T* new_arr = new T[size];
@@ -246,6 +249,7 @@ Vector<T>& Vector<T>::operator=(const Vector<T>& Second_Vector)
 		}
 	
 }
+
 template <typename T>
 bool Vector<T>::operator<(const Vector<T>& Second_Vector)
 {
@@ -274,11 +278,13 @@ bool Vector<T>::operator<(const Vector<T>& Second_Vector)
 	}
 	return false;
 }
+
 template <typename T>
 bool Vector<T>::operator>(const Vector<T>& Second_Vector)
 {
 	return !(*this < Second_Vector) && (*this != Second_Vector);
 }
+
 template <typename T>
 bool Vector<T>::operator==(const Vector<T>& Second_Vector)
 {
@@ -299,11 +305,13 @@ bool Vector<T>::operator==(const Vector<T>& Second_Vector)
 	}
 	return true;
 }
+
 template <typename T>
 bool Vector<T>::operator!=(const Vector<T>& Second_Vector)
 {
 	return !(*this == Second_Vector);
 }
+
 template <typename T>
 bool Vector<T>::operator<=(const Vector<T>& Second_Vector)
 {
@@ -312,6 +320,7 @@ bool Vector<T>::operator<=(const Vector<T>& Second_Vector)
 	else
 		return false;
 }
+
 template <typename T>
 bool Vector<T>::operator>=(const Vector<T>& Second_Vector)
 {
@@ -321,6 +330,5 @@ bool Vector<T>::operator>=(const Vector<T>& Second_Vector)
 		return false;
 
 }
-
 
 #endif

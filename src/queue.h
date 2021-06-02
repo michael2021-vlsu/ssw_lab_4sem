@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef Queue_D2AFDC6572624C1F8B98572614DEF89D
+#define Queue_D2AFDC6572624C1F8B98572614DEF89D
+
 #include <cstring>
 #include <stdexcept>
 
@@ -164,12 +167,15 @@ public:
 			} while (pk != em);
 
 			pick = tbuff;
-			if (stored_count == capacitance) 
+
+			stored_count = cpos - tbuff;
+			if (stored_count == capacitance)
 				place = tbuff;
 			else
 				place = tbuff + stored_count;
 			
-			free(items); items = tbuff;
+			free(items); 
+			items = tbuff;
 			itemse = tbuff + capacitance;
 		}
 	}
@@ -235,3 +241,5 @@ public:
 		return *this <= arg && *this != arg;
 	}
 };
+
+#endif

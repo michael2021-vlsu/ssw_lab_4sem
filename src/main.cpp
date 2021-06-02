@@ -15,7 +15,7 @@
 using namespace std;
 
 void UnitTest_Queue();
-void UnitTest_Vector(const std::string &struct_name);
+void UnitTest_Vector();
 void UnitTest_Stack();
 
 
@@ -24,7 +24,7 @@ int main() {
 
 	cout << "Unit tests:" << endl;
 	UnitTest_Queue();
-	UnitTest_Vector("vector");
+	UnitTest_Vector();
 	UnitTest_Stack();
 
 	cout << endl << "Perfomance tests:" << endl;
@@ -57,7 +57,7 @@ int main() {
 		q2.pop();
 	}
 	end = std::chrono::high_resolution_clock::now();
-	std::cout << "The queue.h time: " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << " us\n";
+	std::cout << "The queue.h time: " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << " us\n\n";
 	
 	/* Vector region */
 	std::vector<float> v1;
@@ -87,7 +87,7 @@ int main() {
 		v2.pop_back();
 	}
 	end = std::chrono::high_resolution_clock::now();
-	std::cout << "The Vector.h time: " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << " us\n";
+	std::cout << "The Vector.h time: " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << " us\n\n";
 	
 	/* Stack region */
 	std::stack<float> s1;
@@ -132,7 +132,8 @@ void UnitTest_Queue() {
 	for (unsigned short i = 0; i != 5000; ++i) {
 		tmp2 = abs(rand()) % 50;
 		if (tmp2 == 0) { //Reverse
-			if (tmp2 = q2.count()) {
+			tmp2 = q2.count();
+			if (tmp2 != 0) {
 				q2.reverse();
 
 				stack<float> st;
@@ -146,9 +147,10 @@ void UnitTest_Queue() {
 				}
 			}
 		} else if (tmp2 == 2) { //Delete Range
-			if (tmp2 = q2.count()) {
+			tmp2 = q2.count();
+			if (tmp2 != 0) {
 				tmp1 = rand() / 32767.0;
-				tmp3 = tmp1 + rand() / 65535.0;
+				tmp3 = tmp1 + rand() / 512.0;
 				q2.removeInRange(tmp1, tmp3);
 
 				vector<float> st;
@@ -157,7 +159,7 @@ void UnitTest_Queue() {
 						st.push_back(q1.front());
 					q1.pop();
 				}
-				for (unsigned short j = 0; j != tmp2; ++j) {
+				for (unsigned short j = 0; j != st.size(); ++j) {
 					q1.push(st[j]);
 				}
 			}
@@ -258,7 +260,7 @@ void UnitTest_Queue() {
 }
 
 /* UNIT TEST - VECTOR */
-void UnitTest_Vector(const std::string &struct_name) {
+void UnitTest_Vector() {
 	vector<float> v1; //Reference STD vector
 	Vector<float> v2; //Testing vector
 
@@ -267,13 +269,15 @@ void UnitTest_Vector(const std::string &struct_name) {
 	for (unsigned short i = 0; i != 5000; ++i) {
 		tmp2 = abs(rand()) % 70;
 		if (tmp2 == 0) { //Reverse
-			if (tmp2 = v2.count()) {
+			tmp2 = v2.count();
+			if (tmp2 != 0) {
 				v2.reverse();
 
 				std::reverse(v1.begin(), v1.end()); //Reverse reference vector
 			}
 		} else if (tmp2 == 2) { //Delete Range
-			if (tmp2 = v2.count()) {
+			tmp2 = v2.count();
+			if (tmp2 != 0) {
 				tmp1 = rand() / 32767.0;
 				tmp3 = tmp1 + rand() / 16535.0;
 				
@@ -288,7 +292,7 @@ void UnitTest_Vector(const std::string &struct_name) {
 			}
 		} else if (tmp2 < 10) { //at
 			if (v1.size() != v2.count()) {
-				cout << struct_name << ": 1 - fail! at1" << " | Test #" << i << endl;
+				cout << "vector: 1 - fail! at1" << " | Test #" << i << endl;
 				return;
 			}
 
@@ -296,7 +300,7 @@ void UnitTest_Vector(const std::string &struct_name) {
 				tmp2 = abs(rand()) % v2.count();
 
 				if (v1.at(tmp2) != v2.at(tmp2)) {
-					cout << struct_name << ": 1 - fail! at2" << " | Test #" << i << endl;
+					cout << "vector: 1 - fail! at2" << " | Test #" << i << endl;
 					return;
 				}
 			}
@@ -307,22 +311,22 @@ void UnitTest_Vector(const std::string &struct_name) {
 				v1.push_back(tmp1);
 				v2.push_back(tmp1);
 			} catch (const std::exception &) {
-				cout << struct_name << ": 1 - fail! push_back" << " | Test #" << i << endl;
+				cout << "vector: 1 - fail! push_back" << " | Test #" << i << endl;
 				return;
 			}
 		} else if (tmp2 < 40) { //Push_front
 			tmp1 = rand() / 3.0;
 
 			try {
-				v1.push_back(tmp1);
-				v2.push_back(tmp1);
+				v1.insert(v1.begin(), tmp1);
+				v2.push_front(tmp1);
 			} catch (const std::exception &) {
-				cout << struct_name << ": 1 - fail! push_front" << " | Test #" << i << endl;
+				cout << "vector: 1 - fail! push_front" << " | Test #" << i << endl;
 				return;
 			}
 		} else if (tmp2 < 55) { //Pop_back
 			if (v1.size() != v2.count()) {
-				cout << struct_name << ": 1 - fail! pop_back1" << " | Test #" << i << endl;
+				cout << "vector: 1 - fail! pop_back1" << " | Test #" << i << endl;
 				return;
 			}
 
@@ -332,17 +336,17 @@ void UnitTest_Vector(const std::string &struct_name) {
 					v1.pop_back();
 
 					if (tmp1 != v2.pop_back()) {
-						cout << struct_name << ": 1 - fail! pop_back2" << " | Test #" << i << endl;
+						cout << "vector: 1 - fail! pop_back2" << " | Test #" << i << endl;
 						return;
 					}
 				} catch (const std::exception &) {
-					cout << struct_name << ": 1 - fail! pop_back3" << " | Test #" << i << endl;
+					cout << "vector: 1 - fail! pop_back3" << " | Test #" << i << endl;
 					return;
 				}
 			}
 		} else if (tmp2 < 70) { //Pop_front
 			if (v1.size() != v2.count()) {
-				cout << struct_name << ": 1 - fail! pop_front1" << " | Test #" << i << endl;
+				cout << "vector: 1 - fail! pop_front1" << " | Test #" << i << endl;
 				return;
 			}
 
@@ -352,11 +356,11 @@ void UnitTest_Vector(const std::string &struct_name) {
 					v1.erase(v1.begin());
 
 					if (tmp1 != v2.pop_front()) {
-						cout << struct_name << ": 1 - fail! pop_front2" << " | Test #" << i << endl;
+						cout << "vector: 1 - fail! pop_front2" << " | Test #" << i << endl;
 						return;
 					}
 				} catch (const std::exception &) {
-					cout << struct_name << ": 1 - fail! pop_front3" << " | Test #" << i << endl;
+					cout << "vector: 1 - fail! pop_front3" << " | Test #" << i << endl;
 					return;
 				}
 			}
@@ -379,7 +383,7 @@ void UnitTest_Vector(const std::string &struct_name) {
 		v3.push_back(1); v3.push_back(3); v3.push_back(2); v3.push_back(4);
 		v4.push_back(1); v4.push_back(3); v4.push_back(2); v4.push_back(4);
 		if (v3 != v4 || !(v3 == v4) || !(v3 <= v4) || !(v3 >= v4)) {
-			cout << struct_name + ": 2 - fail! 1" << " | Test #" << i << endl;
+			cout << "vector: 2 - fail! 1" << " | Test #" << i << endl;
 			return;
 		}
 		v3.pop_front(); v3.pop_front(); v3.pop_front(); v3.pop_front();
@@ -388,12 +392,12 @@ void UnitTest_Vector(const std::string &struct_name) {
 		v3.push_back(1); v3.push_back(3); v3.push_back(3); v3.push_back(4);
 		v4.push_back(1); v4.push_back(3); v4.push_back(2); v4.push_back(4);
 		if (v3 < v4 || v3 <= v4) {
-			cout << struct_name << ": 2 - fail! 2" << " | Test #" << i << endl;
+			cout << "vector: 2 - fail! 2" << " | Test #" << i << endl;
 			return;
 		}
 
 		if (!(v3 > v4) || !(v3 >= v4)) {
-			cout << struct_name << ": 2 - fail! 3" << " | Test #" << i << endl;
+			cout << "vector: 2 - fail! 3" << " | Test #" << i << endl;
 			return;
 		}
 
@@ -403,12 +407,12 @@ void UnitTest_Vector(const std::string &struct_name) {
 		v3.push_back(1); v3.push_back(3); v3.push_back(2); v3.push_back(4);
 		v4.push_back(1); v4.push_back(3); v4.push_back(2);
 		if (v3 < v4 || v3 <= v4) {
-			cout << struct_name << "queue: 2 - fail! 4" << " | Test #" << i << endl;
+			cout << "vector: 2 - fail! 4" << " | Test #" << i << endl;
 			return;
 		}
 
 		if (!(v3 > v4) || !(v3 >= v4)) {
-			cout << struct_name << "queue: 2 - fail! 5" << " | Test #" << i << endl;
+			cout << "vector: 2 - fail! 5" << " | Test #" << i << endl;
 			return;
 		}
 
@@ -416,10 +420,123 @@ void UnitTest_Vector(const std::string &struct_name) {
 		v4.pop_front(); v4.pop_front(); v4.pop_front();
 	}
 
-	cout << struct_name << ": passed!" << endl;
+	cout << "vector: passed!" << endl;
 }
 
-
+/* UNIT TEST - STACK */
 void UnitTest_Stack() {
-	UnitTest_Vector("stack");
+	vector<float> v1; //Reference STD vector
+	Stack<float> v2; //Testing stack
+
+	float tmp1, tmp3;
+	int tmp2;
+	for (unsigned short i = 0; i != 5000; ++i) {
+		tmp2 = abs(rand()) % 70;
+		if (tmp2 == 0) { //Reverse
+			tmp2 = v2.count();
+			if (tmp2 != 0) {
+				v2.reverse();
+
+				std::reverse(v1.begin(), v1.end()); //Reverse reference vector
+			}
+		} else if (tmp2 == 2) { //Delete Range
+			tmp2 = v2.count();
+			if (tmp2 != 0) {
+				tmp1 = rand() / 32767.0;
+				tmp3 = tmp1 + rand() / 16535.0;
+
+				v2.deleteRange(tmp1, tmp3);
+
+				vector<float> tvec;
+				for (auto bg = v1.begin(), ed = v1.end(); bg != ed; ++bg) { //Go for all items in reference vector
+					if (*bg < tmp1 || *bg > tmp3) //Check item's range condition
+						tvec.push_back(*bg); //If ok, copy item to new vector
+				}
+				v1 = tvec; //Update reference vector
+			}
+		} else if (tmp2 < 25) { //Push_back
+			tmp1 = rand() / 3.0;
+
+			try {
+				v1.push_back(tmp1);
+				v2.push(tmp1);
+			} catch (const std::exception &) {
+				cout << "stack: 1 - fail! push_back" << " | Test #" << i << endl;
+				return;
+			}
+		} else if (tmp2 < 55) { //Pop_back
+			if (v1.size() != v2.count()) {
+				cout << "stack: 1 - fail! pop_back1" << " | Test #" << i << endl;
+				return;
+			}
+
+			if (v2.count() != 0) {
+				try {
+					tmp1 = v1.back();
+					v1.pop_back();
+
+					if (tmp1 != v2.pop()) {
+						cout << "vector: 1 - fail! pop_back2" << " | Test #" << i << endl;
+						return;
+					}
+				} catch (const std::exception &) {
+					cout << "vector: 1 - fail! pop_back3" << " | Test #" << i << endl;
+					return;
+				}
+			}
+		} 
+	}
+
+	Stack<int> v3, v4;
+
+	for (unsigned short i = 0; i != 10; ++i) {
+		//Making a circular offset
+		for (unsigned short j = 0; j != 3; ++j) {
+			v3.push(0);
+			v4.push(0);
+		}
+		for (unsigned short j = 0; j != 3; ++j) {
+			v3.pop();
+			v4.pop();
+		}
+
+		v3.push(1); v3.push(3); v3.push(2); v3.push(4);
+		v4.push(1); v4.push(3); v4.push(2); v4.push(4);
+		if (v3 != v4 || !(v3 == v4) || !(v3 <= v4) || !(v3 >= v4)) {
+			cout << "stack: 2 - fail! 1" << " | Test #" << i << endl;
+			return;
+		}
+		v3.pop(); v3.pop(); v3.pop(); v3.pop();
+		v4.pop(); v4.pop(); v4.pop(); v4.pop();
+
+		v3.push(1); v3.push(3); v3.push(3); v3.push(4);
+		v4.push(1); v4.push(3); v4.push(2); v4.push(4);
+		if (v3 < v4 || v3 <= v4) {
+			cout << "stack: 2 - fail! 2" << " | Test #" << i << endl;
+			return;
+		}
+
+		if (!(v3 > v4) || !(v3 >= v4)) {
+			cout << "stack: 2 - fail! 3" << " | Test #" << i << endl;
+			return;
+		}
+		v3.pop(); v3.pop(); v3.pop(); v3.pop();
+		v4.pop(); v4.pop(); v4.pop(); v4.pop();
+
+		v3.push(1); v3.push(3); v3.push(2); v3.push(4);
+		v4.push(1); v4.push(3); v4.push(2);
+		if (v3 < v4 || v3 <= v4) {
+			cout << "stack: 2 - fail! 4" << " | Test #" << i << endl;
+			return;
+		}
+
+		if (!(v3 > v4) || !(v3 >= v4)) {
+			cout << "stack: 2 - fail! 5" << " | Test #" << i << endl;
+			return;
+		}
+		v3.pop(); v3.pop(); v3.pop(); v3.pop();
+		v4.pop(); v4.pop(); v4.pop();
+	}
+
+	cout << "stack: passed!" << endl;
 }
