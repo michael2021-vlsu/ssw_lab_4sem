@@ -237,6 +237,21 @@ void UnitTest_Queue() {
 
 		q3.pop(); q3.pop(); q3.pop(); q3.pop();
 		q4.pop(); q4.pop(); q4.pop(); q4.pop();
+		
+		q3.push(1); q3.push(3); q3.push(2); q3.push(4);
+		q4.push(1); q4.push(3); q4.push(2);
+		if (q3 < q4 || q3 <= q4) {
+			cout << "queue: 2 - fail! 4" << " | Test #" << i << endl;
+			return;
+		}
+
+		if (!(q3 > q4) || !(q3 >= q4)) {
+			cout << "queue: 2 - fail! 5" << " | Test #" << i << endl;
+			return;
+		}
+
+		q3.pop(); q3.pop(); q3.pop(); q3.pop();
+		q4.pop(); q4.pop(); q4.pop();
 	}
 
 	cout << "queue: passed!" << endl;
@@ -384,6 +399,21 @@ void UnitTest_Vector(const std::string &struct_name) {
 
 		v3.pop_front(); v3.pop_front(); v3.pop_front(); v3.pop_front();
 		v4.pop_front(); v4.pop_front(); v4.pop_front(); v4.pop_front();
+		
+		v3.push_back(1); v3.push_back(3); v3.push_back(2); v3.push_back(4);
+		v4.push_back(1); v4.push_back(3); v4.push_back(2);
+		if (v3 < v4 || v3 <= v4) {
+			cout << struct_name << "queue: 2 - fail! 4" << " | Test #" << i << endl;
+			return;
+		}
+
+		if (!(v3 > v4) || !(v3 >= v4)) {
+			cout << struct_name << "queue: 2 - fail! 5" << " | Test #" << i << endl;
+			return;
+		}
+
+		v3.pop_front(); v3.pop_front(); v3.pop_front(); v3.pop_front();
+		v4.pop_front(); v4.pop_front(); v4.pop_front();
 	}
 
 	cout << struct_name << ": passed!" << endl;

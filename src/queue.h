@@ -102,7 +102,6 @@ public:
 	}
 
 	void push(T item) {
-		const T &ref = item;
 		emplace(item);
 	}
 
@@ -138,14 +137,13 @@ public:
 			T *pk = pick, *em = place - 1;
 			if (em < items) em = itemse - 1;
 
-			while (true) {
+			while (pk != em) {
 				tmp = *pk; *pk = *em; *em = tmp;
 
 				if (++pk == itemse) pk = items;
 				if (pk == em) break;
 
 				if (--em < items) em = itemse - 1;
-				if (pk == em) break;
 			}
 		}
 	}
