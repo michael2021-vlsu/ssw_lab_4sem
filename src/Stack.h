@@ -131,7 +131,6 @@ void Stack<T>::deleteRange(T start, T end) {
 template <typename T>
 void Stack<T>::reverse() {
 	if (size == 0) {
-		std::cout << "Error! Stack is empty.\n";
 		throw std::underflow_error("Error! Stack is empty.");
 	}
 	T *new_arr = new T[size];
