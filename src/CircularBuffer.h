@@ -55,17 +55,19 @@ public:
 	}
 
 	CircularBuffer &operator=(const CircularBuffer &arg) {
-		capacitance = arg.capacitance;
-		stored_count = arg.stored_count;
+		if (this != &arg) {
+			capacitance = arg.capacitance;
+			stored_count = arg.stored_count;
 
-		items = std::unique_ptr<T[]>(new T[capacitance]);
-		itemse = items.get() + capacitance;
+			items = std::unique_ptr<T[]>(new T[capacitance]);
+			itemse = items.get() + capacitance;
 
-		place = items.get() + (arg.place - arg.items.get());
-		pick = items.get() + (arg.pick - arg.items.get());
+			place = items.get() + (arg.place - arg.items.get());
+			pick = items.get() + (arg.pick - arg.items.get());
 
-		memcpy(items.get(), arg.items.get(), capacitance * sizeof(T));
-
+			memcpy(items.get(), arg.items.get(), capacitance * sizeof(T));
+		}
+		
 		return *this;
 	}
 

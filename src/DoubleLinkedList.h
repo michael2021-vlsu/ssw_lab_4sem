@@ -8,8 +8,6 @@
 #include <stdexcept>
 #include <iterator>
 
-#include <fstream>
-
 template <typename T>
 class DoubleLinkedList {
 	struct Node {
@@ -111,24 +109,26 @@ public:
 	}
 
 	DoubleLinkedList &operator=(const DoubleLinkedList &arg) {
-		capacitance = stored_count = arg.stored_count;
+		if (this != &arg) {
+			capacitance = stored_count = arg.stored_count;
 
-		items = std::unique_ptr<std::shared_ptr<Node>[]>(new std::shared_ptr<Node>[capacitance]);
-		fempty = itemse = items.get() + capacitance;
+			items = std::unique_ptr<std::shared_ptr<Node>[]>(new std::shared_ptr<Node>[capacitance]);
+			fempty = itemse = items.get() + capacitance;
 
-		std::weak_ptr<Node> prew_my_node, current_other_node = arg.first;
-		for (std::shared_ptr<Node> *itm = items.get(); itm != itemse; ++itm) {
-			auto lck = current_other_node.lock();
+			std::weak_ptr<Node> prew_my_node, current_other_node = arg.first;
+			for (std::shared_ptr<Node> *itm = items.get(); itm != itemse; ++itm) {
+				auto lck = current_other_node.lock();
 
-			*itm = std::shared_ptr<Node>(new Node());
-			(*itm)->init(itm, lck->item, prew_my_node);
+				*itm = std::shared_ptr<Node>(new Node());
+				(*itm)->init(itm, lck->item, prew_my_node);
 
-			prew_my_node = *itm;
-			current_other_node = lck->next;
+				prew_my_node = *itm;
+				current_other_node = lck->next;
+			}
+
+			first = items[0];
+			last = prew_my_node;
 		}
-
-		first = items[0];
-		last = prew_my_node;
 
 		return *this;
 	}

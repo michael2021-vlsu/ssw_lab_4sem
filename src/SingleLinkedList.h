@@ -8,8 +8,6 @@
 #include <stdexcept>
 #include <iterator>
 
-#include <fstream>
-
 template <typename T>
 class SingleLinkedList {
 	struct Node {
@@ -95,27 +93,29 @@ public:
 	}
 
 	SingleLinkedList &operator=(const SingleLinkedList &arg) {
-		capacitance = stored_count = arg.stored_count;
+		if (this != &arg) {
+			capacitance = stored_count = arg.stored_count;
 
-		items = std::unique_ptr<std::shared_ptr<Node>[]>(new std::shared_ptr<Node>[capacitance]);
-		fempty = itemse = items.get() + capacitance;
+			items = std::unique_ptr<std::shared_ptr<Node>[]>(new std::shared_ptr<Node>[capacitance]);
+			fempty = itemse = items.get() + capacitance;
 
-		std::weak_ptr<Node> current_other_node = arg.first;
-		std::shared_ptr<Node> *prew_my_node = nullptr;
-		for (std::shared_ptr<Node> *itm = items.get(); itm != itemse; ++itm) {
-			*itm = std::shared_ptr<Node>(new Node());
-			if (prew_my_node) {
-				auto lck = current_other_node.lock();
-				(*prew_my_node)->init(prew_my_node, lck->item, *itm);
-				current_other_node = lck->prew;
-			} else
-				first = *itm;
+			std::weak_ptr<Node> current_other_node = arg.first;
+			std::shared_ptr<Node> *prew_my_node = nullptr;
+			for (std::shared_ptr<Node> *itm = items.get(); itm != itemse; ++itm) {
+				*itm = std::shared_ptr<Node>(new Node());
+				if (prew_my_node) {
+					auto lck = current_other_node.lock();
+					(*prew_my_node)->init(prew_my_node, lck->item, *itm);
+					current_other_node = lck->prew;
+				} else
+					first = *itm;
 
-			prew_my_node = itm;
+				prew_my_node = itm;
+			}
+			if (prew_my_node)
+				(*prew_my_node)->init(prew_my_node, current_other_node.lock()->item);
 		}
-		if (prew_my_node)
-			(*prew_my_node)->init(prew_my_node, current_other_node.lock()->item);
-
+		
 		return *this;
 	}
 
