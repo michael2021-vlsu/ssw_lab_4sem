@@ -279,7 +279,7 @@ void UnitTest_Vector() {
 			tmp2 = v2.count();
 			if (tmp2 != 0) {
 				tmp1 = rand() / 32767.0;
-				tmp3 = tmp1 + rand() / 16535.0;
+				tmp3 = tmp1 + rand() / 512.0;
 				
 				v2.deleteRange(tmp1, tmp3);
 
@@ -443,7 +443,7 @@ void UnitTest_Stack() {
 			tmp2 = v2.count();
 			if (tmp2 != 0) {
 				tmp1 = rand() / 32767.0;
-				tmp3 = tmp1 + rand() / 16535.0;
+				tmp3 = tmp1 + rand() / 512.0;
 
 				v2.deleteRange(tmp1, tmp3);
 
