@@ -13,7 +13,7 @@
 template <typename T>
 class DoubleLinkedList {
 	struct Node {
-		std::shared_ptr<Node> *me;
+		std::shared_ptr<Node> *me{nullptr};
 		std::weak_ptr<Node> prew, next;
 		T item;
 
@@ -401,9 +401,7 @@ public:
 
 		unsigned int index, err_index;
 		std::weak_ptr<Node> ptr;
-		iterator(std::weak_ptr<Node> current, unsigned int index, unsigned int err_index): index(index), err_index(err_index) {
-			ptr = current;
-		}
+		iterator(std::weak_ptr<Node> current, unsigned int index, unsigned int err_index): ptr(current), index(index), err_index(err_index) { }
 	public:
 		using iterator_category = std::bidirectional_iterator_tag;
 		using value_type = T;

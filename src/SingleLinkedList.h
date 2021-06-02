@@ -13,7 +13,7 @@
 template <typename T>
 class SingleLinkedList {
 	struct Node {
-		std::shared_ptr<Node> *me;
+		std::shared_ptr<Node> *me{nullptr};
 		std::weak_ptr<Node> prew;
 		T item;
 
@@ -69,7 +69,8 @@ public:
 
 			prew_my_node = itm;
 		}
-		(*prew_my_node)->init(prew_my_node, *citem);
+		if (prew_my_node)
+			(*prew_my_node)->init(prew_my_node, *citem);
 	}
 
 	SingleLinkedList(const SingleLinkedList &arg): capacitance(arg.stored_count), stored_count(arg.stored_count) {
@@ -89,7 +90,8 @@ public:
 
 			prew_my_node = itm;
 		}
-		(*prew_my_node)->init(prew_my_node, current_other_node.lock()->item);
+		if (prew_my_node)
+			(*prew_my_node)->init(prew_my_node, current_other_node.lock()->item);
 	}
 
 	SingleLinkedList &operator=(const SingleLinkedList &arg) {
@@ -111,7 +113,8 @@ public:
 
 			prew_my_node = itm;
 		}
-		(*prew_my_node)->init(prew_my_node, current_other_node.lock()->item);
+		if (prew_my_node)
+			(*prew_my_node)->init(prew_my_node, current_other_node.lock()->item);
 
 		return *this;
 	}
@@ -367,9 +370,7 @@ public:
 		unsigned int index, err_index;
 		std::weak_ptr<Node> ptr;
 		iterator(unsigned int index, unsigned int err_index): index(index), err_index(err_index) { }
-		iterator(unsigned int index, unsigned int err_index, std::weak_ptr<Node> current): index(index), err_index(err_index) {
-			ptr = current;
-		}
+		iterator(unsigned int index, unsigned int err_index, std::weak_ptr<Node> current): ptr(current), index(index), err_index(err_index) { }
 	public:
 		using iterator_category = std::forward_iterator_tag;
 		using value_type = T;
