@@ -7,15 +7,15 @@
 template <typename T>
 class Stack {
 public:
-	T *arr; //Array of elements
-	int size; //The number of elements
+	T *arr {nullptr}; //Array of elements
+	int size {0}; //The number of elements
 public:
-	Stack();
+	Stack() = default;
 	Stack(const Stack<T> &);
 	~Stack();
 
-	void push(T); //Insert element to back
-	T pop(); //Get and remove element from back
+	void push(T); //Insert element to front
+	T pop(); //Get and remove element from front
 	T peek(); //Get the first element
 	int count(); //Get the number of elements in stack 
 
@@ -32,12 +32,6 @@ public:
 	bool operator<=(const Stack<T> &);
 	bool operator>=(const Stack<T> &);
 };
-
-template <typename T>
-Stack<T>::Stack() {
-	size = 0;
-	arr = 0;
-}
 
 template <typename T>
 Stack<T>::Stack(const Stack &stack) {
@@ -58,28 +52,33 @@ Stack<T>::~Stack() {
 }
 
 template <typename T>
-void Stack<T>::push(T element) {
-	T *new_arr = new T[size + 1];
-	for (int i = 0; i < size; i++) {
-		new_arr[i] = arr[i];
+void Stack<T>::push(T element)
+{
+	T* new_arr = new T[size + 1];
+	new_arr[0] = element;
+	for (int i = 1; i <= size; i++)
+	{
+		new_arr[i] = arr[i - 1];
 	}
-	new_arr[size] = element;
 	delete[] arr;
 	arr = new_arr;
 	size++;
 }
 
 template <typename T>
-T Stack<T>::pop() {
-	if (size == 0) {
-		throw std::underflow_error("Error! Stack is empty.");
+T Stack<T>::pop()
+{
+	if (size == 0)
+	{
+		throw std::underflow_error("Error! Vector is empty.");
 	}
-	T *new_arr = new T[size - 1];
-	for (int i = 0; i < size - 1; i++) {
-		new_arr[i] = arr[i];
+	T* new_arr = new T[size - 1];
+	for (int i = 0; i < size - 1; i++)
+	{
+		new_arr[i] = arr[i + 1];
 	}
 	T element;
-	element = arr[size - 1];
+	element = arr[0];
 	delete[] arr;
 	arr = new_arr;
 	size--;

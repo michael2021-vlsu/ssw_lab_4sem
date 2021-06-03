@@ -354,13 +354,18 @@ void UnitTest_Vector() {
 				try {
 					tmp1 = v1.front();
 					v1.erase(v1.begin());
-
-					if (tmp1 != v2.pop_front()) {
+					
+					if (tmp1 != v2.peek()) {
 						cout << "vector: 1 - fail! pop_front2" << " | Test #" << i << endl;
 						return;
 					}
+
+					if (tmp1 != v2.pop_front()) {
+						cout << "vector: 1 - fail! pop_front3" << " | Test #" << i << endl;
+						return;
+					}
 				} catch (const std::exception &) {
-					cout << "vector: 1 - fail! pop_front3" << " | Test #" << i << endl;
+					cout << "vector: 1 - fail! pop_front4" << " | Test #" << i << endl;
 					return;
 				}
 			}
@@ -475,12 +480,16 @@ void UnitTest_Stack() {
 					tmp1 = v1.back();
 					v1.pop_back();
 
+					if (tmp1 != v2.peek()) {
+						cout << "stack: 1 - fail! pop_back2" << " | Test #" << i << endl;
+						return;
+					}
 					if (tmp1 != v2.pop()) {
-						cout << "vector: 1 - fail! pop_back2" << " | Test #" << i << endl;
+						cout << "stack: 1 - fail! pop_back3" << " | Test #" << i << endl;
 						return;
 					}
 				} catch (const std::exception &) {
-					cout << "vector: 1 - fail! pop_back3" << " | Test #" << i << endl;
+					cout << "stack: 1 - fail! pop_back4" << " | Test #" << i << endl;
 					return;
 				}
 			}

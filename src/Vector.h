@@ -8,10 +8,10 @@ class Vector
 {
 public:
 private:
-	T* arr; //Array of elements
-	int size; //The number of elements
+	T* arr {nullptr}; //Array of elements
+	int size {0}; //The number of elements
 public:
-	Vector();
+	Vector() = default;
 	Vector(const Vector&);
 	~Vector();
 
@@ -50,18 +50,11 @@ public:
 };
 
 template <typename T>
-Vector<T>::Vector()
-{
-	size = 0;
-	arr = 0;
-}
-
-template <typename T>
 Vector<T>::Vector(const Vector& vector)
 {
 	size = vector.size;
 	if (size == 0)
-		arr = 0;
+		arr = nullptr;
 	else {
 		arr = new T[size];
 		for (int i = 0; i < size; i++)
@@ -229,25 +222,25 @@ Vector<T>& Vector<T>::operator=(const Vector<T>& Second_Vector)
 {
 	if (this == &Second_Vector)
 		return *this;
+		
+	if (Second_Vector.arr = nullptr)
+	{
+		delete[] arr;
+		arr = nullptr;
+		size = 0;
+		return *this;
+	}
 	else 
-		if (Second_Vector.arr = 0)
+	{
+		delete[] arr;
+		size = Second_Vector.size;
+		arr = new T[size];
+		for (int i = 0; i < size; i++)
 		{
-			delete[] arr;
-			size = 0;
-			return *this;
+			arr[i] = Second_Vector.arr[i];
 		}
-		else 
-		{
-			delete[] arr;
-			size = Second_Vector.size;
-			arr = new T[size];
-			for (int i = 0; i < size; i++)
-			{
-				arr[i] = Second_Vector.arr[i];
-			}
-			return *this;
-		}
-	
+		return *this;
+	}
 }
 
 template <typename T>
