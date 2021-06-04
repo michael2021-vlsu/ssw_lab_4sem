@@ -134,7 +134,9 @@ int main() {
 
 	cout << "Tests passed!" << endl << endl;
 
+#ifndef GITHUBCI
 	Individual_Tasks();
+#endif
 
 	return 0;
 }

@@ -243,10 +243,12 @@ public:
 
 		//Uniq info
 		size_t current_chunk, current_item;
+		//First valid item
+		size_t valid_chunk_min, valid_item_min;
 
-		iterator(std::weak_ptr<std::shared_ptr<std::shared_ptr<std::pair<Tk, Ti>>[]>[]> chunks, size_t chunks_count, size_t chunk_capacity, size_t current_chunk, size_t current_item, bool nw):
+		iterator(std::weak_ptr<std::shared_ptr<std::shared_ptr<std::pair<Tk, Ti>>[]>[]> chunks, size_t chunks_count, size_t chunk_capacity, size_t current_chunk, size_t current_item, bool pure):
 			chunks(chunks), chunks_count(chunks_count), chunk_capacity(chunk_capacity), current_chunk(current_chunk), current_item(current_item) {
-			if (nw && current_item == 0) {
+			if (pure && current_item == 0) {
 				while (!chunks.lock()[this->current_chunk][this->current_item].get()) {
 					if (++this->current_item == chunk_capacity) {
 						if (++this->current_chunk == chunks_count) {
@@ -256,6 +258,22 @@ public:
 						this->current_item = 0;
 					}
 				};
+				valid_chunk_min = this->current_chunk;
+				valid_item_min = this->current_item;
+			} else {
+				current_chunk = 0;
+				current_item = 0;
+				while (!chunks.lock()[current_chunk][current_item].get()) {
+					if (++current_item == chunk_capacity) {
+						if (++current_chunk == chunks_count) {
+							--current_chunk;
+							break;
+						}
+						current_item = 0;
+					}
+				};
+				valid_chunk_min = current_chunk;
+				valid_item_min = current_item;
 			}
 		}
 	public:
@@ -313,11 +331,10 @@ public:
 		}
 
 		iterator &operator--() {
-			if (current_item == 0 && current_chunk == 0) throw std::out_of_range("Iterator out of range!");
+			if (current_item == valid_item_min && current_chunk == valid_chunk_min) throw std::out_of_range("Iterator out of range!");
 			do {
 				if (current_item-- == 0) {
-					if (current_chunk-- == 0)
-						break;
+					--current_chunk;
 					current_item = chunk_capacity - 1;
 				}
 			} while (!chunks.lock()[current_chunk][current_item].get());
@@ -325,12 +342,11 @@ public:
 		}
 
 		iterator operator--(int) {
-			if (current_item == 0 && current_chunk == 0) throw std::out_of_range("Iterator out of range!");
+			if (current_item == valid_item_min && current_chunk == valid_chunk_min) throw std::out_of_range("Iterator out of range!");
 			iterator temp(*this);
 			do {
 				if (current_item-- == 0) {
-					if (current_chunk-- == 0)
-						break;
+					--current_chunk;
 					current_item = chunk_capacity - 1;
 				}
 			} while (!chunks.lock()[current_chunk][current_item].get());
