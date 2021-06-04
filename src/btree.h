@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TREE_BST
+#define TREE_BST
 
 #include<iostream>
 #include <stdexcept>
@@ -159,8 +160,27 @@ public:
 		}
 	}
 
+	BinarySearchTree(const BinarySearchTree &arg) {
+		vector<weak_ptr<Node>> nodes;
+		BSToWeakVector(arg.root, nodes);
+		for (auto item : nodes) {
+			push(item.lock()->key);
+		}
+	}
 
-	T* find(const T& key) const {
+	BinarySearchTree &operator=(const BinarySearchTree &arg) {
+		if (this != &arg) {
+			vector<weak_ptr<Node>> nodes;
+			BSToWeakVector(arg.root, nodes);
+			for (auto item : nodes) {
+				push(item.lock()->key);
+			}
+		}
+		return *this;
+	}
+
+
+	const T* find(const T& key) const {
 		weak_ptr<Node> n = root;
 		while (!n.expired()) {
 			if (n.lock()->key == key)
@@ -390,3 +410,5 @@ std::ostream &operator<<(std::ostream &out, const BinarySearchTree<T> &buffer) {
 	}
 	return out;
 }
+
+#endif
