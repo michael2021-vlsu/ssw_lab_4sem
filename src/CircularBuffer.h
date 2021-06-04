@@ -335,55 +335,6 @@ public:
 	iterator end() const {
 		return iterator(place, items.get(), itemse, stored_count, stored_count);
 	}
-
-	CircularBuffer merge_with_sorted(const CircularBuffer &buffer) const {
-		CircularBuffer<T> new_buffer(stored_count + buffer.stored_count);
-
-		iterator il = begin(), ile = end(), io = buffer.begin(), ioe = buffer.end();
-
-		while (il != ile && io != ioe) {
-			if (*io > *il) {
-				new_buffer.push(*il++);
-			} else {
-				new_buffer.push(*io++);
-			}
-		}
-
-		for (; il != ile; ++il) {
-			new_buffer.push(*il);
-		}
-
-		for (; io != ioe; ++io) {
-			new_buffer.push(*io);
-		}
-
-		return new_buffer;
-	}
-
-	CircularBuffer get_min_max() {
-		if (stored_count < 2) throw std::underflow_error("Count of elements must be at least 2!");
-
-		CircularBuffer<T>::iterator it = begin(), min = it, max = it++;
-
-		for (CircularBuffer<T>::iterator ite = end(); it != ite; ++it) {
-			if (*it < *min)
-				min = it;
-			else if (*it > *max)
-				max = it;
-		}
-
-		CircularBuffer<T> new_buffer{ *min, *max };
-
-		if (max.get_index() > min.get_index()) {
-			erase(max.get_index());
-			erase(min.get_index());
-		} else {
-			erase(min.get_index());
-			erase(max.get_index());
-		}
-
-		return new_buffer;
-	}
 };
 
 template<typename T>

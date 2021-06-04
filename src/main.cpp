@@ -9,10 +9,13 @@
 
 #include <chrono>
 #include "STD_CircularBuffer.h"
+#include "Individuals_Circular.h"
 
-#include "CircularBuffer.h"
 #include "DoubleLinkedList.h"
+#include "Individuals_DLL.h"
+
 #include "SingleLinkedList.h"
+#include "Individuals_SLL.h"
 
 using namespace std;
 
@@ -136,7 +139,7 @@ void UnitTest_CircularBuffer() {
 				cb2.pop();
 
 			CircularBuffer<float> second({-1.48, 152, 8875, -256.337, -16.8574});
-			second = cb2.merge_with_sorted(second);
+			second = idv::merge_with_sorted(cb2, second);
 
 			auto cvec = cb1.to_vector();
 			vector<float> vsecond({ -1.48, 152, 8875, -256.337, -16.8574 });
@@ -151,7 +154,7 @@ void UnitTest_CircularBuffer() {
 			}
 		} else if (tmp2 == 2) { //Get min & max
 			if (cb2.count() > 1) {
-				auto second = cb2.get_min_max();
+				auto second = idv::get_min_max(cb2);
 
 				auto cvec = cb1.to_vector();
 				auto min = min_element(cvec.begin(), cvec.end());
@@ -302,7 +305,7 @@ void UnitTest_DoubleLinkedList() {
 		tmp2 = abs(rand()) % 60;
 		if (tmp2 == 0) { //Merge sorted
 			DoubleLinkedList<float> second({ -1.48, 152, 8875, -256.337, -16.8574 });
-			second = cb2.merge_with_sorted(second);
+			second = idv::merge_with_sorted(cb2, second);
 
 			vector<float> vsecond({ -1.48, 152, 8875, -256.337, -16.8574 });
 			vector<float> result;
@@ -316,7 +319,7 @@ void UnitTest_DoubleLinkedList() {
 			}
 		} else if (tmp2 == 2) { //Get min & max
 			if (cb2.count() > 1) {
-				auto second = cb2.get_min_max();
+				auto second = idv::get_min_max(cb2);
 
 				auto min = min_element(cb1.begin(), cb1.end());
 				if (*min != second.pop_back()) {
@@ -503,7 +506,7 @@ void UnitTest_SingleLinkedList() {
 		tmp2 = abs(rand()) % 60;
 		if (tmp2 == 0) { //Merge sorted
 			SingleLinkedList<float> second({ -1.48, 152, 8875, -256.337, -16.8574 });
-			second = cb2.merge_with_sorted(second);
+			second = idv::merge_with_sorted(cb2, second);
 
 			vector<float> vsecond({ -1.48, 152, 8875, -256.337, -16.8574 });
 			vector<float> result;
@@ -517,7 +520,7 @@ void UnitTest_SingleLinkedList() {
 			}
 		} else if (tmp2 == 2) { //Get min & max
 			if (cb2.count() > 1) {
-				auto second = cb2.get_min_max();
+				auto second = idv::get_min_max(cb2);
 
 				auto min = min_element(cb1.begin(), cb1.end());
 				if (*min != second.pop()) {

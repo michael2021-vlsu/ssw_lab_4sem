@@ -473,55 +473,6 @@ public:
 	iterator end() const {
 		return iterator(last, stored_count, stored_count);
 	}
-
-	DoubleLinkedList merge_with_sorted(const DoubleLinkedList &other) const {
-		DoubleLinkedList<T> buffer(stored_count + other.stored_count);
-
-		iterator il = begin(), ile = end(), io = other.begin(), ioe = other.end();
-
-		while (il != ile && io != ioe) {
-			if (*io > *il) {
-				buffer.push_back(*il++);
-			} else {
-				buffer.push_back(*io++);
-			}
-		}
-
-		for (; il != ile; ++il) {
-			buffer.push_back(*il);
-		}
-
-		for (; io != ioe; ++io) {
-			buffer.push_back(*io);
-		}
-
-		return buffer;
-	}
-
-	DoubleLinkedList get_min_max() {
-		if (stored_count < 2) throw std::underflow_error("Count of elements must be at least 2!");
-
-		DoubleLinkedList<T>::iterator it = begin(), min = it, max = it++;
-
-		for (DoubleLinkedList<T>::iterator ite = end(); it != ite; ++it) {
-			if (*it < *min)
-				min = it;
-			else if (*it > *max)
-				max = it;
-		}
-
-		DoubleLinkedList<T> new_buffer{ *max, *min };
-
-		if (max.get_index() > min.get_index()) {
-			erase(max.get_index());
-			erase(min.get_index());
-		} else {
-			erase(min.get_index());
-			erase(max.get_index());
-		}
-
-		return new_buffer;
-	}
 };
 
 template<typename T>
