@@ -58,7 +58,7 @@ int main() {
 	}
 	end = std::chrono::high_resolution_clock::now();
 	std::cout << "The queue.h time: " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << " us\n\n";
-	
+
 	/* Vector region */
 	std::vector<float> v1;
 	begin = std::chrono::high_resolution_clock::now();
@@ -88,7 +88,7 @@ int main() {
 	}
 	end = std::chrono::high_resolution_clock::now();
 	std::cout << "The Vector.h time: " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << " us\n\n";
-	
+
 	/* Stack region */
 	std::stack<float> s1;
 	begin = std::chrono::high_resolution_clock::now();
@@ -118,7 +118,7 @@ int main() {
 	}
 	end = std::chrono::high_resolution_clock::now();
 	std::cout << "The Stack.h time: " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << " us\n";
-	
+
 	return 0;
 }
 
@@ -232,14 +232,14 @@ void UnitTest_Queue() {
 			return;
 		}
 
-		if (!(q3 > q4) || !(q3 >= q4) ) {
+		if (!(q3 > q4) || !(q3 >= q4)) {
 			cout << "queue: 2 - fail! 3" << " | Test #" << i << endl;
 			return;
 		}
 
 		q3.pop(); q3.pop(); q3.pop(); q3.pop();
 		q4.pop(); q4.pop(); q4.pop(); q4.pop();
-		
+
 		q3.push(1); q3.push(3); q3.push(2); q3.push(4);
 		q4.push(1); q4.push(3); q4.push(2);
 		if (q3 < q4 || q3 <= q4) {
@@ -254,6 +254,20 @@ void UnitTest_Queue() {
 
 		q3.pop(); q3.pop(); q3.pop(); q3.pop();
 		q4.pop(); q4.pop(); q4.pop();
+
+		q3.push(1);
+		if (q3 < q4 || q3 == q4) {
+			cout << "queue: 2 - fail! 7" << " | Test #" << i << endl;
+			return;
+		}
+		q3.pop();
+
+		q4.push(1);
+		if (q4 < q3 || q3 == q4) {
+			cout << "queue: 2 - fail! 8" << " | Test #" << i << endl;
+			return;
+		}
+		q4.pop();
 	}
 
 	cout << "queue: passed!" << endl;
@@ -280,7 +294,7 @@ void UnitTest_Vector() {
 			if (tmp2 != 0) {
 				tmp1 = rand() / 32767.0;
 				tmp3 = tmp1 + rand() / 512.0;
-				
+
 				v2.deleteRange(tmp1, tmp3);
 
 				vector<float> tvec;
@@ -354,7 +368,7 @@ void UnitTest_Vector() {
 				try {
 					tmp1 = v1.front();
 					v1.erase(v1.begin());
-					
+
 					if (tmp1 != v2.peek()) {
 						cout << "vector: 1 - fail! pop_front2" << " | Test #" << i << endl;
 						return;
@@ -408,7 +422,7 @@ void UnitTest_Vector() {
 
 		v3.pop_front(); v3.pop_front(); v3.pop_front(); v3.pop_front();
 		v4.pop_front(); v4.pop_front(); v4.pop_front(); v4.pop_front();
-		
+
 		v3.push_back(1); v3.push_back(3); v3.push_back(2); v3.push_back(4);
 		v4.push_back(1); v4.push_back(3); v4.push_back(2);
 		if (v3 < v4 || v3 <= v4) {
@@ -423,6 +437,25 @@ void UnitTest_Vector() {
 
 		v3.pop_front(); v3.pop_front(); v3.pop_front(); v3.pop_front();
 		v4.pop_front(); v4.pop_front(); v4.pop_front();
+
+		if (v3 != v4 || v3 < v4) {
+			cout << "vector: 2 - fail! 6" << " | Test #" << i << endl;
+			return;
+		}
+
+		v3.push_back(1);
+		if (v3 < v4 || v3 == v4) {
+			cout << "vector: 2 - fail! 7" << " | Test #" << i << endl;
+			return;
+		}
+		v3.pop_back();
+
+		v4.push_back(1);
+		if (v4 < v3 || v3 == v4) {
+			cout << "vector: 2 - fail! 8" << " | Test #" << i << endl;
+			return;
+		}
+		v4.pop_back();
 	}
 
 	cout << "vector: passed!" << endl;
@@ -493,7 +526,7 @@ void UnitTest_Stack() {
 					return;
 				}
 			}
-		} 
+		}
 	}
 
 	Stack<int> v3, v4;
@@ -545,6 +578,25 @@ void UnitTest_Stack() {
 		}
 		v3.pop(); v3.pop(); v3.pop(); v3.pop();
 		v4.pop(); v4.pop(); v4.pop();
+
+		if (v3 != v4 || v3 < v4) {
+			cout << "stack: 2 - fail! 6" << " | Test #" << i << endl;
+			return;
+		}
+
+		v3.push(1);
+		if (v3 < v4 || v3 == v4) {
+			cout << "stack: 2 - fail! 7" << " | Test #" << i << endl;
+			return;
+		}
+		v3.pop();
+
+		v4.push(1);
+		if (v4 < v3 || v3 == v4) {
+			cout << "stack: 2 - fail! 8" << " | Test #" << i << endl;
+			return;
+		}
+		v4.pop();
 	}
 
 	cout << "stack: passed!" << endl;

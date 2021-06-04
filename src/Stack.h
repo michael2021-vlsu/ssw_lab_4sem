@@ -7,8 +7,8 @@
 template <typename T>
 class Stack {
 public:
-	T *arr {nullptr}; //Array of elements
-	int size {0}; //The number of elements
+	T *arr{ nullptr }; //Array of elements
+	int size{ 0 }; //The number of elements
 public:
 	Stack() = default;
 	Stack(const Stack<T> &);
@@ -37,7 +37,7 @@ template <typename T>
 Stack<T>::Stack(const Stack &stack) {
 	size = stack.size;
 	if (size == 0)
-		arr = 0;
+		arr = nullptr;
 	else {
 		arr = new T[size];
 		for (int i = 0; i < size; i++) {
@@ -52,33 +52,28 @@ Stack<T>::~Stack() {
 }
 
 template <typename T>
-void Stack<T>::push(T element)
-{
-	T* new_arr = new T[size + 1];
-	new_arr[0] = element;
-	for (int i = 1; i <= size; i++)
-	{
-		new_arr[i] = arr[i - 1];
+void Stack<T>::push(T element) {
+	T *new_arr = new T[size + 1];
+	for (int i = 0; i < size; i++) {
+		new_arr[i] = arr[i];
 	}
+	new_arr[size] = element;
 	delete[] arr;
 	arr = new_arr;
 	size++;
 }
 
 template <typename T>
-T Stack<T>::pop()
-{
-	if (size == 0)
-	{
-		throw std::underflow_error("Error! Vector is empty.");
+T Stack<T>::pop() {
+	if (size == 0) {
+		throw std::underflow_error("Error! Stack is empty.");
 	}
-	T* new_arr = new T[size - 1];
-	for (int i = 0; i < size - 1; i++)
-	{
-		new_arr[i] = arr[i + 1];
+	T *new_arr = new T[size - 1];
+	for (int i = 0; i < size - 1; i++) {
+		new_arr[i] = arr[i];
 	}
 	T element;
-	element = arr[0];
+	element = arr[size - 1];
 	delete[] arr;
 	arr = new_arr;
 	size--;
@@ -90,7 +85,7 @@ T Stack<T>::peek() {
 	if (size == 0) {
 		throw std::underflow_error("Error! Stack is empty.");
 	}
-	return arr[0];
+	return arr[size - 1];
 }
 
 template <typename T>
@@ -148,6 +143,7 @@ Stack<T> &Stack<T>::operator=(const Stack<T> &Second_Stack) {
 	else
 		if (Second_Stack.arr = 0) {
 			delete[] arr;
+			arr = nullptr;
 			size = 0;
 			return *this;
 		} else {
@@ -167,22 +163,24 @@ bool Stack<T>::operator<(const Stack<T> &Second_Stack) {
 	if (this == &Second_Stack)
 		return false;
 	else
-		if (size < Second_Stack.size) {
-			if (size == 0)
-				return true;
-			for (int i = 0; i < size; i++) {
-				if (arr[i] < Second_Stack.arr[i])
-					return true;
+		if (size) {
+			if (size < Second_Stack.size) {
+				for (int i = 0; i < size; i++) {
+					if (arr[i] < Second_Stack.arr[i])
+						return true;
+				}
+			} else {
+				if (Second_Stack.size == 0)
+					return false;
+				for (int i = 0; i < Second_Stack.size; i++) {
+					if (arr[i] < Second_Stack.arr[i])
+						return true;
+				}
 			}
-		} else {
-			if (size == 0)
-				return true;
-			for (int i = 0; i < Second_Stack.size; i++) {
-				if (arr[i] < Second_Stack.arr[i])
-					return true;
-			}
-		}
-	return false;
+		} else if (Second_Stack.size)
+			return true;
+
+		return false;
 }
 
 template <typename T>
