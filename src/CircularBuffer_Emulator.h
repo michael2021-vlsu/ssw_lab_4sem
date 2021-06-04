@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef STD_CircularBuffer_D679BA40CEC24336AE47CA16782DFFBA
-#define STD_CircularBuffer_D679BA40CEC24336AE47CA16782DFFBA
+#ifndef CircularBuffer_Emulator_D679BA40CEC24336AE47CA16782DFFBA
+#define CircularBuffer_Emulator_D679BA40CEC24336AE47CA16782DFFBA
 
 #include <queue>
 #include <vector>
@@ -10,11 +10,11 @@ using namespace std;
 
 /* std::circular_buffer simple emulator */
 template <typename T>
-class STD_CircularBuffer : public queue<T> {
+class CircularBuffer_Emulator : public queue<T> {
 	using queue<T>::emplace;
 	unsigned int capacity;
 public:
-	STD_CircularBuffer(unsigned int capacity): queue<T>(), capacity(capacity) {
+	CircularBuffer_Emulator(unsigned int capacity): queue<T>(), capacity(capacity) {
 	}
 
 	void push(const T &item) {

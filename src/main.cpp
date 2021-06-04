@@ -8,7 +8,9 @@
 #include <algorithm>
 
 #include <chrono>
-#include "STD_CircularBuffer.h"
+#include "CircularBuffer_Emulator.h"
+
+#include "CircularBuffer.h"
 #include "Individuals_Circular.h"
 
 #include "DoubleLinkedList.h"
@@ -34,7 +36,7 @@ int main() {
 	cout << endl << "Perfomance tests:" << endl;
 
 	/* CircularBuffer region */
-	STD_CircularBuffer<float> cb1(20);
+	CircularBuffer_Emulator<float> cb1(20);
 	
 	std::chrono::high_resolution_clock::time_point begin = std::chrono::high_resolution_clock::now();
 	for (size_t i = 0; i < 6; ++i) {
@@ -125,7 +127,7 @@ int main() {
 
 /* CIRCULAR BUFFER UNIT TEST */
 void UnitTest_CircularBuffer() {
-	STD_CircularBuffer<float> cb1(10);
+	CircularBuffer_Emulator<float> cb1(10);
 	CircularBuffer<float> cb2(10);
 
 	float tmp1;
