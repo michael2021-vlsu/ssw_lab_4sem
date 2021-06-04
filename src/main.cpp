@@ -1,10 +1,38 @@
 ﻿#include <iostream>
 #include "tree_general.h"
+#include "btree.h"
 
 void test_general_tree();
 
 int main()
 {
+	BinarySearchTree<float> bst;
+	bst.push(2);
+	bst.push(5);
+	bst.push(9);
+	bst.push(7);
+	bst.push(6);
+	bst.push(8);
+	bst.push(8);
+	bst.push(10);
+	bst.push(1);
+
+	bst.print();
+	cout << endl;
+	bst.pop(5);
+	bst.print();
+	cout << endl;
+
+	*(bst.find(10)) = 85;
+	*(bst.find(8)) = 85;
+
+	bst.balance();
+
+	bst.print();
+
+	cout << endl << bst.count() << endl;
+
+	return 0;
 	test_general_tree();
 }
 
