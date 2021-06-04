@@ -6,6 +6,9 @@ void test_general_tree();
 
 int main()
 {
+	BinarySearchTree<int> bst2{2, 4, 16, 32};
+	cout << bst2 << endl;
+
 	BinarySearchTree<float> bst;
 	bst.push(2);
 	bst.push(5);

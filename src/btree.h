@@ -151,6 +151,15 @@ class BinarySearchTree {
 	}
 
 public:
+	BinarySearchTree() = default;
+
+	BinarySearchTree(const std::initializer_list<T> &list) {
+		for (auto item : list) {
+			push(item);
+		}
+	}
+
+
 	T* find(const T& key) const {
 		weak_ptr<Node> n = root;
 		while (!n.expired()) {
