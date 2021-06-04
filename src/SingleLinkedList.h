@@ -327,22 +327,25 @@ public:
 
 	bool operator>(const SingleLinkedList &arg) const {
 		if (stored_count) {
-			std::weak_ptr<Node> my = first, other = arg.first;
+			if (arg.stored_count) {
+				std::weak_ptr<Node> my = first, other = arg.first;
 
-			while (true) {
-				auto myl = my.lock(), otherl = other.lock();
+				while (true) {
+					auto myl = my.lock(), otherl = other.lock();
 
-				if (myl->item > otherl->item)
-					return true;
-				else if (myl->item < otherl->item)
-					return false;
+					if (myl->item > otherl->item)
+						return true;
+					else if (myl->item < otherl->item)
+						return false;
 
-				my = myl->prew;
-				if (my.expired()) return false;
+					my = myl->prew;
+					if (my.expired()) return false;
 
-				other = otherl->prew;
-				if (other.expired()) return true;
-			}
+					other = otherl->prew;
+					if (other.expired()) return true;
+				}
+			} else
+				return true;
 		}
 
 		return false;
