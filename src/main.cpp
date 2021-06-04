@@ -28,7 +28,7 @@ int main()
 
 	bst.balance();
 
-	bst.print();
+	cout << endl << endl << bst << endl;
 
 	cout << endl << bst.count() << endl;
 

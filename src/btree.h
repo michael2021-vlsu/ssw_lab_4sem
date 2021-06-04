@@ -109,7 +109,7 @@ class BinarySearchTree {
 	}
 
 //	a22f565da52bee36751cf194d6a31eff/74bd5f72a85733e073fbedb121227875
-	void BSToVector(weak_ptr<Node> root, vector<shared_ptr<Node>> &nodes) {
+	void BSToVector(weak_ptr<Node> root, vector<shared_ptr<Node>> &nodes) const {
 		if (root.expired())
 			return;
 
@@ -117,6 +117,16 @@ class BinarySearchTree {
 		BSToVector(lck->left, nodes);
 		nodes.push_back(lck);
 		BSToVector(lck->right, nodes);
+	}
+
+	void BSToWeakVector(weak_ptr<Node> root, vector<weak_ptr<Node>> &nodes) const {
+		if (root.expired())
+			return;
+
+		auto lck = root.lock();
+		BSToWeakVector(lck->left, nodes);
+		nodes.push_back(lck);
+		BSToWeakVector(lck->right, nodes);
 	}
 
 	shared_ptr<Node> BuildItem(vector<shared_ptr<Node>> &nodes, int start, int end) {
@@ -227,4 +237,147 @@ public:
 		printPreorder(root);
 	}
 
+	class iterator {
+		friend class BinarySearchTree;
+
+		vector<weak_ptr<Node>> tree;
+		size_t tree_begin, tree_end, current;
+
+		iterator(vector<weak_ptr<Node>> tree, bool is_begin): tree(tree), tree_begin(0), tree_end(tree.size()) {
+			if (is_begin)
+				current = tree_begin;
+			else
+				current = tree_end;
+		}
+	public:
+		using iterator_category = std::bidirectional_iterator_tag;
+		using value_type = T;
+		using difference_type = std::ptrdiff_t;
+		using pointer = T *;
+		using reference = T &;
+
+		bool operator!=(iterator const &other) const {
+			return current != other.current;
+		}
+
+		bool operator==(iterator const &other) const {
+			return current == other.current;
+		}
+
+		T &operator*() const {
+			if (current == tree_end) throw std::logic_error("Can not dereference end iterator!");
+			return tree[current].lock()->key;
+		}
+
+		T *operator->() const {
+			if (current == tree_end) throw std::logic_error("Can not dereference end iterator!");
+			return &(tree[current].lock()->key);
+		}
+
+		iterator &operator++() {
+			if (current == tree_end) throw std::out_of_range("Iterator out of range!");
+			++current;
+			return *this;
+		}
+
+		iterator operator++(int) {
+			if (current == tree_end) throw std::out_of_range("Iterator out of range!");
+			iterator temp(*this);
+			++current;
+			return temp;
+		}
+		iterator &operator--() {
+			if (current == tree_begin) throw std::out_of_range("Iterator out of range!");
+			--current;
+			return *this;
+		}
+
+		iterator operator--(int) {
+			if (current == tree_begin) throw std::out_of_range("Iterator out of range!");
+			iterator temp(*this);
+			--current;
+			return temp;
+		}
+	};
+
+	iterator begin() const {
+		vector<weak_ptr<Node>> nodes;
+		BSToWeakVector(root, nodes);
+
+		return iterator(nodes, true);
+	}
+
+	iterator end() const {
+		vector<weak_ptr<Node>> nodes;
+		BSToWeakVector(root, nodes);
+
+		return iterator(nodes, false);
+	}
+
+	bool operator==(const BinarySearchTree &arg) const {
+		auto my_count = count(), other_count = arg.count();
+
+		if (my_count != other_count)
+			return false;
+
+		if (my_count) {
+			auto my = begin(), mye = end(), other = arg.begin();
+
+			do {
+				if (*my != *other)
+					return false;
+
+				++my; ++other;
+			} while (my != mye);
+		}
+
+		return true;
+	}
+
+	bool operator>(const BinarySearchTree &arg) const {
+		auto my_count = count(), other_count = arg.count();
+
+		if (my_count != 0) {
+			if (other_count != 0) {
+				auto my = begin(), mye = end(), other = arg.begin(), othere = arg.end();
+
+				while (true) {
+					if (*my > *other)
+						return true;
+					else if (*my < *other)
+						return false;
+
+					if (++my == mye) return false;
+					if (++other == othere) return true;
+				}
+			} else
+				return true;
+		}
+
+		return false;
+	}
+
+	bool operator!=(const BinarySearchTree &arg) const {
+		return !(*this == arg);
+	}
+
+	bool operator>=(const BinarySearchTree &arg) const {
+		return *this > arg || *this == arg;
+	}
+
+	bool operator<=(const BinarySearchTree &arg) const {
+		return !(*this > arg);
+	}
+
+	bool operator<(const BinarySearchTree &arg) const {
+		return *this <= arg && *this != arg;
+	}
 };
+
+template<typename T>
+std::ostream &operator<<(std::ostream &out, const BinarySearchTree<T> &buffer) {
+	for (auto item : buffer) {
+		out << item << std::endl;
+	}
+	return out;
+}
