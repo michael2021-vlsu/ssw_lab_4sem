@@ -278,10 +278,10 @@ public:
 		}
 	public:
 		using iterator_category = std::bidirectional_iterator_tag;
-		using value_type = Ti;
+		using value_type = std::pair<Tk, Ti>;
 		using difference_type = std::ptrdiff_t;
-		using pointer = Ti *;
-		using reference = Ti &;
+		using pointer = std::pair<Tk, Ti> *;
+		using reference = std::pair<Tk, Ti> &;
 
 		bool operator!=(iterator const &other) const {
 			return !(current_item == other.current_item && current_chunk == other.current_chunk);
