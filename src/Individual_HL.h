@@ -16,13 +16,12 @@ namespace idv
 	
 
 	class Individual {
-		std::unique_ptr<HashList<std::string, std::vector<std::string>>> countries;
-		std::unique_ptr<HashList<std::string, std::string>> cities;
+		std::unique_ptr<HashList<std::string, std::vector<std::string>>> countries, cities;
 
 	public:
 		Individual() {
 			countries = std::unique_ptr<HashList<std::string, std::vector<std::string>>>(new HashList<std::string, std::vector<std::string>>(0.75, 2048));
-			cities = std::unique_ptr<HashList<std::string, std::string>>(new HashList<std::string, std::string>(0.75, 4096));
+			cities = std::unique_ptr<HashList<std::string, std::vector<std::string>>>(new HashList<std::string, std::vector<std::string>>(0.75, 4096));
 
 			std::chrono::high_resolution_clock::time_point begin = std::chrono::high_resolution_clock::now();
 			{
@@ -35,14 +34,18 @@ namespace idv
 					city = buff.substr(comma + 1);
 
 					if (comma != SIZE_MAX) {
-						auto ccpair = countries->find(contry);
+						std::vector<std::string> *ccpair = countries->find(contry);
 						if (ccpair) {
 							ccpair->push_back(city);
 						} else {
 							countries->emplace(contry, std::vector<std::string> { city });
 						}
-						cities->emplace(city, contry);
-
+						ccpair = cities->find(city);
+						if (ccpair) {
+							ccpair->push_back(contry);
+						} else {
+							cities->emplace(city, std::vector<std::string> { contry });
+						}
 					}
 				}
 				istr.close();
@@ -64,11 +67,12 @@ namespace idv
 		IsInCityAnswer is_city_in_country(const std::string &country, const std::string &city) const {
 			auto ccpair = cities->find(city);
 			if (ccpair) {
-				if (country == *ccpair) {
-					return IsInCityAnswer::YES;
-				} else {
-					return IsInCityAnswer::NO;
+				for (auto item : *ccpair) {
+					if (item == country) {
+						return IsInCityAnswer::YES;
+					}
 				}
+				return IsInCityAnswer::NO;
 			} 
 			return IsInCityAnswer::DONT_KNOW;
 		}
