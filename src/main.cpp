@@ -103,6 +103,7 @@ int main() {
 	end = std::chrono::high_resolution_clock::now();
 	std::cout << "erase for random key x5000 time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms\n";
 
+#ifndef GITHUBCI
 	idv::Individual idvtask;
 	auto ccpair = idvtask.cities_by_country(string("Russia"));
 	cout << "Russia: founded " << ccpair.size() << " cities:" << endl;
@@ -114,8 +115,6 @@ int main() {
 
 	cout << "Tests passed!" << endl << endl;
 
-
-#ifndef GITHUBCI
 	Individual_Tasks();
 #endif
 
