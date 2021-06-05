@@ -13,12 +13,14 @@
 
 namespace idv
 {
-	
-
 	class Individual {
 		std::unique_ptr<HashList<std::string, std::vector<std::string>>> countries, cities;
 
 	public:
+		Individual(const Individual &arg) = delete;
+		Individual &operator=(const Individual &arg) = delete;
+
+
 		Individual() {
 			countries = std::unique_ptr<HashList<std::string, std::vector<std::string>>>(new HashList<std::string, std::vector<std::string>>(0.75, 2048));
 			cities = std::unique_ptr<HashList<std::string, std::vector<std::string>>>(new HashList<std::string, std::vector<std::string>>(0.75, 4096));
