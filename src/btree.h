@@ -170,11 +170,7 @@ public:
 
 	BinarySearchTree &operator=(const BinarySearchTree &arg) {
 		if (this != &arg) {
-			vector<weak_ptr<Node>> nodes;
-			BSToWeakVector(arg.root, nodes);
-			for (auto item : nodes) {
-				push(item.lock()->key);
-			}
+			root = buildTree(arg.root);
 		}
 		return *this;
 	}
