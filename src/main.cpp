@@ -1,7 +1,5 @@
 ﻿#include <iostream>
-#include <ctime>
 #include <cstdlib>
-#include <algorithm>
 #include <string>
 #include <vector>
 #include <fstream>
@@ -9,37 +7,12 @@
 
 #include "HashList.h"
 
+#include "Individual_HL.h"
+
 using namespace std;
 
 void Individual_Tasks() {
-	HashList<std::string, std::vector<std::string>> countries(0.75, 2048);
-	HashList<std::string, std::string> cities(0.75, 4096);
-
-	std::chrono::high_resolution_clock::time_point begin = std::chrono::high_resolution_clock::now();
-	{
-		ifstream istr("cities.txt", ios::in);
-		std::string buff, contry, city;
-		while (!istr.eof()) {
-			getline(istr, buff);
-			size_t comma = buff.find_first_of(',');
-			contry = buff.substr(0, comma);
-			city = buff.substr(comma + 1);
-
-			if (comma != SIZE_MAX) {
-				auto ccpair = countries.find(contry);
-				if (ccpair) {
-					ccpair->push_back(city);
-				} else {
-					countries.emplace(contry, std::vector<std::string> { city });
-				}
-				cities.emplace(city, contry);
-
-			}
-		}
-		istr.close();
-	}
-	std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
-	std::cout << "file loaded in: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms\n";
+	idv::Individual idvtask;
 
 	{
 		std::string buff;
@@ -51,29 +24,27 @@ void Individual_Tasks() {
 		if (select == 1) {
 			cout << "Enter the name of the country: ";
 			getline(cin, buff);
-			auto ccpair = countries.find(buff);
-			if (ccpair) {
-				cout << "Founded " << ccpair->size() << " cities:" << endl;
-				for (auto city : *ccpair) {
-					cout << city << endl;
-				}
-			} else
-				cout << "File does not contain this country!";
+			auto ccpair = idvtask.cities_by_country(buff);
+			cout << "Founded " << ccpair.size() << " cities:" << endl;
+			for (auto city : ccpair) {
+				cout << city << endl;
+			}
 		} else {
 			cout << "Enter the name of city: ";
 			getline(cin, buff);
-			auto ccpair = cities.find(buff);
-			if (ccpair) {
-				cout << "Enter the name of the country: ";
-				cin.clear();
-				getline(cin, buff);
-				if (buff == *ccpair) {
-					cout << "This city is a part of mentioned country.";
-				} else {
-					cout << "This country have no such city!";
-				}
-			} else
+			std::string buff2;
+			cout << "Enter the name of the country: ";
+			getline(cin, buff2);
+
+			auto ccpair = idvtask.is_city_in_country(buff2, buff);
+
+			if (ccpair == idv::Individual::IsInCityAnswer::YES) {
+				cout << "This city is a part of mentioned country.";
+			} else if (ccpair == idv::Individual::IsInCityAnswer::NO) {
+				cout << "This country have no such city!";
+			} else {
 				cout << "File does not contain this city!";
+			}
 		}
 	}
 
@@ -133,6 +104,7 @@ int main() {
 	std::cout << "erase for random key x5000 time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms\n";
 
 	cout << "Tests passed!" << endl << endl;
+
 
 #ifndef GITHUBCI
 	Individual_Tasks();
